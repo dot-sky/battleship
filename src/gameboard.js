@@ -7,6 +7,13 @@ export class Gameboard {
   static #SHIP_CELL = 2;
   static #SHIP_CELL_HIT = 3;
 
+  static #direction = {
+    up: [-1, 0],
+    down: [1, 0],
+    right: [0, 1],
+    left: [0, -1],
+  };
+
   constructor() {
     this.resetBoard(Gameboard.#BOARD_SIZE);
     this.ships = [];
@@ -23,8 +30,10 @@ export class Gameboard {
     }
   }
 
-  place(shipType, head, direction) {
+  place(shipType, head, directionKey) {
     let placed = false;
+    let direction =
+      Gameboard.#direction[directionKey] ?? Gameboard.#direction.right;
 
     const ship = new Ship(shipType);
     this.ships.push(ship);

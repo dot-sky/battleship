@@ -17,8 +17,7 @@ test("Empty gameboard is properly filled", () => {
 test("Place carrier at specified coordinates", () => {
   const gameboard = new Gameboard();
   const head = [3, 4];
-  const direction = [0, 1];
-  const received = gameboard.place("carrier", head, direction);
+  const received = gameboard.place("carrier", head, "right");
 
   expect(received).toBe(true);
 });
@@ -26,9 +25,8 @@ test("Place carrier at specified coordinates", () => {
 test("Ships can't share same coordinates", () => {
   const gameboard = new Gameboard();
   const head = [3, 4];
-  const direction = [0, 1];
-  gameboard.place("carrier", head, direction);
-  const received = gameboard.place("submarine", head, direction);
+  gameboard.place("carrier", head, "right");
+  const received = gameboard.place("submarine", head, "right");
 
   expect(received).toBe(false);
 });
@@ -36,8 +34,7 @@ test("Ships can't share same coordinates", () => {
 test("Hits same carrier ship", () => {
   const gameboard = new Gameboard();
   const head = [3, 4];
-  const direction = [0, 1];
-  gameboard.place("carrier", head, direction);
+  gameboard.place("carrier", head, "right");
 
   gameboard.receiveAttack([3, 4]);
   gameboard.receiveAttack([3, 5]);
@@ -50,8 +47,7 @@ test("Hits same carrier ship", () => {
 test("Can't hit ship twice in the same position", () => {
   const gameboard = new Gameboard();
   const head = [3, 4];
-  const direction = [0, 1];
-  gameboard.place("carrier", head, direction);
+  gameboard.place("carrier", head, "right");
 
   gameboard.receiveAttack([3, 4]);
   gameboard.receiveAttack([3, 4]);
@@ -66,9 +62,8 @@ test("Can't hit ship twice in the same position", () => {
 test("All ships aren't sunk", () => {
   const gameboard = new Gameboard();
   const head = [3, 4];
-  const direction = [0, 1];
-  gameboard.place("carrier", head, direction);
-  gameboard.place("submarine", [6, 4], direction);
+  gameboard.place("carrier", head, "right");
+  gameboard.place("submarine", [6, 4], "right");
 
   gameboard.receiveAttack([3, 4]);
   gameboard.receiveAttack([3, 5]);
@@ -84,9 +79,8 @@ test("All ships aren't sunk", () => {
 test("All ships are sunk", () => {
   const gameboard = new Gameboard();
   const head = [3, 4];
-  const direction = [0, 1];
-  gameboard.place("carrier", head, direction);
-  gameboard.place("submarine", [6, 4], direction);
+  gameboard.place("carrier", head, "right");
+  gameboard.place("submarine", [6, 4], "right");
 
   gameboard.receiveAttack([3, 4]);
   gameboard.receiveAttack([3, 5]);
