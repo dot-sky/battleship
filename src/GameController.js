@@ -1,4 +1,4 @@
-import { Player } from "./player";
+import { Player } from "./Player.js";
 
 export class GameController {
   constructor() {

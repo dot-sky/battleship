@@ -1,4 +1,4 @@
-import { Player } from "../player.js";
+import { Player } from "../Player.js";
 test("Player of type real and computer", () => {
   const player = new Player("real");
   const computer = new Player("computer");

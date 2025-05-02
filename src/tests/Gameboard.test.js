@@ -1,4 +1,4 @@
-import { Gameboard } from "../gameboard.js";
+import { Gameboard } from "../Gameboard.js";
 test("Empty gameboard is properly filled", () => {
   const expected = [];
   for (let i = 0; i < 10; i++) {

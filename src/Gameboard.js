@@ -1,4 +1,4 @@
-import { Ship } from "./ship";
+import { Ship } from "./Ship.js";
 
 export class Gameboard {
   static #BOARD_SIZE = 10;
