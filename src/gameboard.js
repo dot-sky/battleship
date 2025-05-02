@@ -108,4 +108,17 @@ export class Gameboard {
       coord[1] < Gameboard.#BOARD_SIZE
     );
   }
+
+  // Default boards
+  defaultOne() {
+    // this.place("battleship", [3, 4], "right");
+    this.place("destroyer", [6, 2], "down");
+    this.place("boat", [7, 6], "right");
+  }
+
+  defaultTwo() {
+    // this.place("battleship", [1, 0], "down");
+    this.place("destroyer", [2, 5], "right");
+    this.place("boat", [7, 1], "right");
+  }
 }
