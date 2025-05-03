@@ -13,10 +13,14 @@ export class GameController {
       two: new Player("computer"),
     };
 
-    this.player.one.board.randomBoardPlacement();
-    this.player.two.board.randomBoardPlacement();
+    this.randomizeBoards();
 
     this.currentTurn = "one";
+  }
+
+  randomizeBoards() {
+    this.player.one.board.randomBoardPlacement();
+    this.player.two.board.randomBoardPlacement();
   }
 
   playTurn(coord) {

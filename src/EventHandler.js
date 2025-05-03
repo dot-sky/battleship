@@ -3,6 +3,17 @@ export class EventHandler {
     this.screenController = screenController;
   }
 
+  addEvents() {
+    this.screenController.randomizerBtn.addEventListener("click", () => {
+      this.randomBtnClick();
+    });
+  }
+  randomBtnClick() {
+    this.screenController.gameController.randomizeBoards();
+
+    this.screenController.render();
+  }
+
   attachCellClickEvent(cell) {
     cell.addEventListener("click", () => this.cellClick(cell));
   }

@@ -8,6 +8,7 @@ export class ScreenController {
     this.gameController = new GameController();
     this.eventHandler = new EventHandler(this);
     this.cacheDOM();
+    this.eventHandler.addEvents();
     this.render();
   }
 
@@ -16,6 +17,7 @@ export class ScreenController {
     this.boardTwo = this.doc.querySelector("#board-2");
 
     this.endGameContainer = this.doc.querySelector("#end-game-container");
+    this.randomizerBtn = this.doc.querySelector("#random-board");
   }
 
   render() {
