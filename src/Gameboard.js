@@ -111,6 +111,31 @@ export class Gameboard {
     );
   }
 
+  randomBoardPlacement() {
+    this.randomPlace("carrier");
+    this.randomPlace("battleship");
+    this.randomPlace("destroyer");
+    this.randomPlace("submarine");
+    this.randomPlace("boat");
+  }
+
+  randomPlace(type) {
+    let x, y, directionKey, placed;
+    const directions = Object.keys(Gameboard.#direction);
+
+    do {
+      x = this.getRandomInt(this.size);
+      y = this.getRandomInt(this.size);
+      directionKey = this.getRandomInt(directions.length);
+
+      placed = this.place(type, [x, y], directions[directionKey]);
+    } while (!placed);
+  }
+
+  getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+
   // Default boards
   defaultOne() {
     // this.place("battleship", [3, 4], "right");
