@@ -14,6 +14,8 @@ export class ScreenController {
   cacheDOM() {
     this.boardOne = this.doc.querySelector("#board-1");
     this.boardTwo = this.doc.querySelector("#board-2");
+
+    this.endGameContainer = this.doc.querySelector("#end-game-container");
   }
 
   render() {
@@ -27,16 +29,20 @@ export class ScreenController {
       this.gameController.player.two.board,
       !this.gameController.isCurrentPlayer("two")
     );
+
+    if (this.gameController.gameEnded()) {
+      this.renderEndGame();
+    }
   }
 
-  renderBoard(boardDOM, gameBoard, isActive) {
+  renderBoard(boardDOM, gameBoard, activeBoard) {
     boardDOM.textContent = "";
 
     for (let i = 0; i < gameBoard.size; i++) {
       const row = this.doc.createElement("div");
 
       for (let j = 0; j < gameBoard.size; j++) {
-        const cell = this.renderCell(gameBoard, isActive, i, j);
+        const cell = this.renderCell(gameBoard, activeBoard, i, j);
         row.appendChild(cell);
       }
 
@@ -44,7 +50,7 @@ export class ScreenController {
     }
   }
 
-  renderCell(gameBoard, isActive, x, y) {
+  renderCell(gameBoard, activeBoard, x, y) {
     const cell = this.doc.createElement("button");
 
     const status = gameBoard.board[x][y].status;
@@ -62,7 +68,7 @@ export class ScreenController {
       cell.classList.add("attacked-cell");
     }
 
-    if (isActive) {
+    if (activeBoard && !this.gameController.gameEnded()) {
       this.eventHandler.attachCellClickEvent(cell);
     }
 
@@ -72,5 +78,13 @@ export class ScreenController {
     cell.classList.add("board-cell");
 
     return cell;
+  }
+
+  // End Game
+  renderEndGame() {
+    this.endGameContainer.textContent = "";
+    const msg = this.doc.createElement("div");
+    msg.textContent = `Player ${this.gameController.winner} has won!`;
+    this.endGameContainer.appendChild(msg);
   }
 }
