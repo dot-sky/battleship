@@ -1,3 +1,68 @@
+:root {
+  /* Spacing */
+  --space-1x: 8px;
+  --space-2x: 16px;
+  --space-3x: 24px;
+  --space-4x: 32px;
+  --space-5x: 40px;
+
+  /* Size */
+  --size-sm: 16px;
+  --size-md: 24px;
+  --size-lg: 32px;
+  --size-xl: 40px;
+  --size-jumbo: 64px;
+}
+
+/* CSS reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* General  */
 body {
-  color: green;
+  font-family: sans-serif;
+}
+
+/* Style */
+.main-container {
+  display: flex;
+  gap: var(--space-4x);
+}
+
+.board-cell {
+  height: var(--size-xl);
+  width: var(--size-xl);
+
+  outline: 1px solid black;
+  border: 0px;
+}
+
+.empty-cell {
+  background-color: white;
+}
+
+.attacked-cell {
+  background-color: rgb(245, 255, 213);
+}
+
+.attacked-ship {
+  background-color: rgb(255, 197, 197);
+}
+
+/*  */
+.inactive-board {
+  visibility: hidden;
 }
