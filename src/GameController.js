@@ -45,6 +45,10 @@ export class GameController {
     return this.currentTurn === "one" ? "two" : "one";
   }
 
+  isCurrentPlayer(player) {
+    return player === this.currentTurn;
+  }
+  
   gameEnded() {
     return this.state === "end";
   }
