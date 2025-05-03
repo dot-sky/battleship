@@ -129,6 +129,7 @@ export class Gameboard {
   }
 
   randomBoardPlacement() {
+    this.resetBoard(this.size);
     this.randomPlace("carrier");
     this.randomPlace("battleship");
     this.randomPlace("destroyer");
