@@ -1,11 +1,11 @@
 import { Ship } from "./Ship.js";
 
 export class Gameboard {
-  static #BOARD_SIZE = 10;
-  static #EMPTY_CELL = 0;
-  static #EMPTY_CELL_HIT = 1;
-  static #SHIP_CELL = 2;
-  static #SHIP_CELL_HIT = 3;
+  static #DEFAULT_SIZE = 10;
+  static EMPTY_CELL = 0;
+  static EMPTY_CELL_HIT = 1;
+  static SHIP_CELL = 2;
+  static SHIP_CELL_HIT = 3;
 
   static #direction = {
     up: [-1, 0],
@@ -15,7 +15,9 @@ export class Gameboard {
   };
 
   constructor() {
-    this.resetBoard(Gameboard.#BOARD_SIZE);
+    this.size = Gameboard.#DEFAULT_SIZE;
+
+    this.resetBoard(this.size);
     this.ships = [];
   }
 
@@ -24,7 +26,7 @@ export class Gameboard {
     for (let i = 0; i < size; i++) {
       const row = [];
       for (let j = 0; j < size; j++) {
-        row.push({ status: Gameboard.#EMPTY_CELL, ship: null });
+        row.push({ status: Gameboard.EMPTY_CELL, ship: null });
       }
       this.board.push(row);
     }
@@ -43,7 +45,7 @@ export class Gameboard {
       let y = head[1];
 
       for (let i = 0; i < ship.length; i++) {
-        this.board[x][y].status = Gameboard.#SHIP_CELL;
+        this.board[x][y].status = Gameboard.SHIP_CELL;
         this.board[x][y].ship = ship;
 
         x += direction[0];
@@ -60,11 +62,11 @@ export class Gameboard {
 
     const cell = this.board[coord[0]][coord[1]];
 
-    if (cell.status === Gameboard.#EMPTY_CELL) {
-      cell.status = Gameboard.#EMPTY_CELL_HIT;
-    } else if (cell.status === Gameboard.#SHIP_CELL) {
+    if (cell.status === Gameboard.EMPTY_CELL) {
+      cell.status = Gameboard.EMPTY_CELL_HIT;
+    } else if (cell.status === Gameboard.SHIP_CELL) {
       cell.ship.hit();
-      cell.status = Gameboard.#SHIP_CELL_HIT;
+      cell.status = Gameboard.SHIP_CELL_HIT;
     }
     return true;
   }
@@ -82,7 +84,7 @@ export class Gameboard {
     for (let i = 0; i < length; i++) {
       if (
         !this.isValidCoord(coord) ||
-        this.board[coord[0]][coord[1]].status !== Gameboard.#EMPTY_CELL
+        this.board[coord[0]][coord[1]].status !== Gameboard.EMPTY_CELL
       )
         return false;
 
@@ -95,17 +97,17 @@ export class Gameboard {
 
   isCoordHit(coord) {
     return (
-      this.board[coord[0]][coord[1]].status === Gameboard.#EMPTY_CELL_HIT ||
-      this.board[coord[0]][coord[1]].status === Gameboard.#SHIP_CELL_HIT
+      this.board[coord[0]][coord[1]].status === Gameboard.EMPTY_CELL_HIT ||
+      this.board[coord[0]][coord[1]].status === Gameboard.SHIP_CELL_HIT
     );
   }
 
   isValidCoord(coord) {
     return (
       coord[0] >= 0 &&
-      coord[0] < Gameboard.#BOARD_SIZE &&
+      coord[0] < this.size &&
       coord[1] >= 0 &&
-      coord[1] < Gameboard.#BOARD_SIZE
+      coord[1] < this.size
     );
   }
 
@@ -117,7 +119,7 @@ export class Gameboard {
   }
 
   defaultTwo() {
-    // this.place("battleship", [1, 0], "down");
+    this.place("battleship", [1, 0], "down");
     this.place("destroyer", [2, 5], "right");
     this.place("boat", [7, 1], "right");
   }
