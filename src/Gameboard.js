@@ -84,7 +84,8 @@ export class Gameboard {
     for (let i = 0; i < length; i++) {
       if (
         !this.isValidCoord(coord) ||
-        this.board[coord[0]][coord[1]].status !== Gameboard.EMPTY_CELL
+        this.board[coord[0]][coord[1]].status !== Gameboard.EMPTY_CELL ||
+        this.nearShip(coord)
       )
         return false;
 
@@ -108,6 +109,22 @@ export class Gameboard {
       coord[0] < this.size &&
       coord[1] >= 0 &&
       coord[1] < this.size
+    );
+  }
+
+  nearShip(coord) {
+    const x = coord[0];
+    const y = coord[1];
+    console.log(coord);
+    return (
+      (this.isValidCoord([x + 1, y]) &&
+        this.board[x + 1][y].status === Gameboard.SHIP_CELL) ||
+      (this.isValidCoord([x - 1, y]) &&
+        this.board[x - 1][y].status === Gameboard.SHIP_CELL) ||
+      (this.isValidCoord([x, y + 1]) &&
+        this.board[x][y + 1].status === Gameboard.SHIP_CELL) ||
+      (this.isValidCoord([x, y - 1]) &&
+        this.board[x][y - 1].status === Gameboard.SHIP_CELL)
     );
   }
 
