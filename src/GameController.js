@@ -29,7 +29,17 @@ export class GameController {
       else this.switchPlayer();
     }
 
+    // verify if next turn is a computer player
+    if (this.player[this.currentTurn].isComputer()) this.playRandom();
+
     return played;
+  }
+
+  playRandom() {
+    const x = this.getRandomInt(this.player.one.board.size);
+    const y = this.getRandomInt(this.player.one.board.size);
+
+    this.playTurn([x, y]);
   }
 
   endGame() {
@@ -48,8 +58,12 @@ export class GameController {
   isCurrentPlayer(player) {
     return player === this.currentTurn;
   }
-  
+
   gameEnded() {
     return this.state === "end";
+  }
+
+  getRandomInt(max) {
+    return Math.floor(Math.random() * max);
   }
 }

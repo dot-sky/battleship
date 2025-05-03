@@ -4,7 +4,12 @@ export class Player {
     this.type = type;
     this.board = new Gameboard();
   }
+
   receiveAttack(coord) {
     this.board.receiveAttack(coord);
+  }
+
+  isComputer() {
+    return this.type === "computer";
   }
 }
