@@ -1,4 +1,5 @@
 import { Player } from "./Player.js";
+import { ComputerDriver } from "./ComputerDriver.js";
 
 export class GameController {
   constructor() {
@@ -12,6 +13,13 @@ export class GameController {
       one: new Player("real"),
       two: new Player("computer"),
     };
+    this.compDriver = {};
+
+    // Add driver to computer players
+    if (this.player.one.isComputer())
+      this.compDriver.one = new ComputerDriver(this.player.two.board);
+    if (this.player.two.isComputer())
+      this.compDriver.two = new ComputerDriver(this.player.one.board);
 
     this.randomizeBoards();
 
@@ -34,16 +42,10 @@ export class GameController {
     }
 
     // verify if next turn is a computer player
-    if (this.player[this.currentTurn].isComputer()) this.playRandom();
+    if (this.player[this.currentTurn].isComputer())
+      this.playTurn(this.compDriver[this.currentTurn].playCoords());
 
     return played;
-  }
-
-  playRandom() {
-    const x = this.getRandomInt(this.player.one.board.size);
-    const y = this.getRandomInt(this.player.one.board.size);
-
-    this.playTurn([x, y]);
   }
 
   endGame() {
@@ -65,9 +67,5 @@ export class GameController {
 
   gameEnded() {
     return this.state === "end";
-  }
-
-  getRandomInt(max) {
-    return Math.floor(Math.random() * max);
   }
 }

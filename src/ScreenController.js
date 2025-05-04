@@ -25,7 +25,7 @@ export class ScreenController {
       this.boardOne,
       this.gameController.player.one.board,
       !this.gameController.isCurrentPlayer("one")
-    );
+    ); 
     this.renderBoard(
       this.boardTwo,
       this.gameController.player.two.board,
