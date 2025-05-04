@@ -18,11 +18,12 @@ export class Gameboard {
     this.size = Gameboard.#DEFAULT_SIZE;
 
     this.resetBoard(this.size);
-    this.ships = [];
   }
 
   resetBoard(size) {
     this.board = [];
+    this.ships = [];
+
     for (let i = 0; i < size; i++) {
       const row = [];
       for (let j = 0; j < size; j++) {
@@ -38,7 +39,6 @@ export class Gameboard {
       Gameboard.#direction[directionKey] ?? Gameboard.#direction.right;
 
     const ship = new Ship(shipType);
-    this.ships.push(ship);
 
     if (this.validPlacement(head, ship.length, direction)) {
       let x = head[0];
@@ -52,8 +52,10 @@ export class Gameboard {
         y += direction[1];
       }
 
+      this.ships.push(ship);
       placed = true;
     }
+
     return placed;
   }
 
@@ -115,7 +117,7 @@ export class Gameboard {
   nearShip(coord) {
     const x = coord[0];
     const y = coord[1];
-    console.log(coord);
+
     return (
       (this.isValidCoord([x + 1, y]) &&
         this.board[x + 1][y].status === Gameboard.SHIP_CELL) ||
