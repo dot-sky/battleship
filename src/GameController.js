@@ -17,9 +17,9 @@ export class GameController {
 
     // Add driver to computer players
     if (this.player.one.isComputer())
-      this.compDriver.one = new ComputerDriver(this.player.two.board);
+      this.compDriver.one = new ComputerDriver(this.player.two.board, this);
     if (this.player.two.isComputer())
-      this.compDriver.two = new ComputerDriver(this.player.one.board);
+      this.compDriver.two = new ComputerDriver(this.player.one.board, this);
 
     this.randomizeBoards();
 
@@ -34,18 +34,21 @@ export class GameController {
   playTurn(coord) {
     if (this.gameEnded()) return false;
 
-    const played = this.player[this.getOpponent()].board.receiveAttack(coord);
+    const attack = this.player[this.getOpponent()].board.receiveAttack(coord);
 
-    if (played) {
+    if (attack.success) {
       if (this.player[this.getOpponent()].board.allShipsSunk()) this.endGame();
       else this.switchPlayer();
     }
 
     // verify if next turn is a computer player
-    if (this.player[this.currentTurn].isComputer())
-      this.playTurn(this.compDriver[this.currentTurn].playCoords());
+    if (this.player[this.currentTurn].isComputer()) {
+      // this.compDriver[this.currentTurn].update(played, coord);
 
-    return played;
+      this.compDriver[this.currentTurn].play();
+    }
+
+    return attack;
   }
 
   endGame() {
