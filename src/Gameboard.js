@@ -60,17 +60,22 @@ export class Gameboard {
   }
 
   receiveAttack(coord) {
-    if (!this.isValidCoord(coord) || this.isCoordHit(coord)) return false;
+    if (!this.isAttackable(coord)) return { success: false, hit: false };
 
     const cell = this.board[coord[0]][coord[1]];
+
+    const attack = { success: true, hit: false };
 
     if (cell.status === Gameboard.EMPTY_CELL) {
       cell.status = Gameboard.EMPTY_CELL_HIT;
     } else if (cell.status === Gameboard.SHIP_CELL) {
       cell.ship.hit();
       cell.status = Gameboard.SHIP_CELL_HIT;
+
+      attack.hit = true;
     }
-    return true;
+
+    return attack;
   }
 
   allShipsSunk() {
@@ -112,6 +117,10 @@ export class Gameboard {
       coord[1] >= 0 &&
       coord[1] < this.size
     );
+  }
+
+  isAttackable(coord) {
+    return this.isValidCoord(coord) && !this.isCoordHit(coord);
   }
 
   nearShip(coord) {
