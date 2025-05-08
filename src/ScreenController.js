@@ -25,7 +25,7 @@ export class ScreenController {
       this.boardOne,
       this.gameController.player.one.board,
       !this.gameController.isCurrentPlayer("one")
-    ); 
+    );
     this.renderBoard(
       this.boardTwo,
       this.gameController.player.two.board,
@@ -62,6 +62,7 @@ export class ScreenController {
     } else if (status === Gameboard.SHIP_CELL) {
       cell.textContent = "O";
       cell.classList.add("ship-cell");
+      this.eventHandler.attachShipDraggingEvent(cell);
     } else if (status === Gameboard.SHIP_CELL_HIT) {
       cell.textContent = "X";
       cell.classList.add("attacked-ship");
@@ -69,6 +70,8 @@ export class ScreenController {
       cell.textContent = ".";
       cell.classList.add("attacked-cell");
     }
+
+    if (!activeBoard) this.eventHandler.attachShipDragDownEvent(cell);
 
     if (activeBoard && !this.gameController.gameEnded()) {
       this.eventHandler.attachCellClickEvent(cell);
@@ -80,6 +83,11 @@ export class ScreenController {
     cell.classList.add("board-cell");
 
     return cell;
+  }
+
+  moveShip(start, end) {
+    this.gameController.moveShip(start, end);
+    this.render();
   }
 
   // End Game

@@ -43,12 +43,16 @@ export class GameController {
 
     // verify if next turn is a computer player
     if (this.player[this.currentTurn].isComputer()) {
-      // this.compDriver[this.currentTurn].update(played, coord);
-
       this.compDriver[this.currentTurn].play();
     }
 
     return attack;
+  }
+
+  // Placing phase
+  moveShip(from, to) {
+    this.player[this.currentTurn].board.move(from, to);
+    console.log(from, to);
   }
 
   endGame() {

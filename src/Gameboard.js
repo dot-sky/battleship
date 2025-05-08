@@ -33,6 +33,7 @@ export class Gameboard {
     }
   }
 
+  // Ship placement
   place(shipType, head, directionKey) {
     let placed = false;
     let direction =
@@ -41,22 +42,76 @@ export class Gameboard {
     const ship = new Ship(shipType);
 
     if (this.validPlacement(head, ship.length, direction)) {
-      let x = head[0];
-      let y = head[1];
+      this.placeShip(head, ship, direction);
 
-      for (let i = 0; i < ship.length; i++) {
-        this.board[x][y].status = Gameboard.SHIP_CELL;
-        this.board[x][y].ship = ship;
-
-        x += direction[0];
-        y += direction[1];
-      }
-
-      this.ships.push(ship);
+      this.ships.push({ ship, head, direction });
       placed = true;
     }
 
     return placed;
+  }
+
+  placeShip(head, ship, direction) {
+    let x = head[0];
+    let y = head[1];
+
+    for (let i = 0; i < ship.length; i++) {
+      this.board[x][y].status = Gameboard.SHIP_CELL;
+      this.board[x][y].ship = ship;
+
+      x += direction[0];
+      y += direction[1];
+    }
+  }
+
+  move(initialCell, finalCell) {
+    const shipInfo = this.getShipInfo(initialCell);
+
+    const diff = this.coordDifference(initialCell, finalCell);
+    const newHead = [shipInfo.head[0] + diff[0], shipInfo.head[1] + diff[1]];
+
+    this.moveShip(shipInfo, newHead);
+  }
+
+  moveShip(shipInfo, newHead) {
+    let moved = false;
+    const direction = shipInfo.direction;
+    const ship = shipInfo.ship;
+
+    if (this.validMove(newHead, ship.length, direction, ship)) {
+      this.removeShipCells(shipInfo);
+      this.placeShip(newHead, ship, direction);
+
+      shipInfo.head = newHead;
+      moved = true;
+
+      console.log(this.ships);
+    }
+
+    return moved;
+  }
+
+  removeShipCells(shipInfo) {
+    let x = shipInfo.head[0];
+    let y = shipInfo.head[1];
+
+    for (let i = 0; i < shipInfo.ship.length; i++) {
+      this.board[x][y].status = Gameboard.EMPTY_CELL;
+      this.board[x][y].ship = null;
+
+      x += shipInfo.direction[0];
+      y += shipInfo.direction[1];
+    }
+  }
+
+  getShipInfo(coords) {
+    const ship = this.board[coords[0]][coords[1]].ship;
+    for (let shipInfo of this.ships) {
+      if (Object.is(shipInfo.ship, ship)) {
+        return shipInfo;
+      }
+    }
+    return null;
   }
 
   receiveAttack(coord) {
@@ -79,8 +134,8 @@ export class Gameboard {
   }
 
   allShipsSunk() {
-    for (let ship of this.ships) {
-      if (!ship.isSunk()) return false;
+    for (let shipInfo of this.ships) {
+      if (!shipInfo.ship.isSunk()) return false;
     }
     return true;
   }
@@ -103,6 +158,27 @@ export class Gameboard {
     return true;
   }
 
+  validMove(head, length, direction, ship) {
+    let coord = [...head];
+    let cell;
+
+    for (let i = 0; i < length; i++) {
+      cell = this.board[coord[0]][coord[1]];
+
+      if (
+        !this.isValidCoord(coord) ||
+        (cell.status !== Gameboard.EMPTY_CELL && !Object.is(cell.ship, ship))
+      )
+        return false;
+
+      coord[0] += direction[0];
+      coord[1] += direction[1];
+    }
+
+    return true;
+  }
+
+  // Coords
   isCoordHit(coord) {
     return (
       this.board[coord[0]][coord[1]].status === Gameboard.EMPTY_CELL_HIT ||
@@ -117,6 +193,10 @@ export class Gameboard {
       coord[1] >= 0 &&
       coord[1] < this.size
     );
+  }
+
+  coordDifference(coordA, coordB) {
+    return [coordB[0] - coordA[0], coordB[1] - coordA[1]];
   }
 
   isAttackable(coord) {

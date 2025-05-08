@@ -1,6 +1,11 @@
+import { GameController } from "./GameController";
+
 export class EventHandler {
   constructor(screenController) {
     this.screenController = screenController;
+
+    this.dragStartCell = [];
+    this.dragEndCell = [];
   }
 
   addEvents() {
@@ -8,6 +13,7 @@ export class EventHandler {
       this.randomBtnClick();
     });
   }
+
   randomBtnClick() {
     this.screenController.gameController.randomizeBoards();
 
@@ -25,5 +31,33 @@ export class EventHandler {
     ]);
 
     this.screenController.render();
+  }
+
+  // Moving ships
+  attachShipDraggingEvent(cell) {
+    cell.addEventListener("mousedown", () => this.startDrag(cell));
+  }
+
+  attachShipDragDownEvent(cell) {
+    cell.addEventListener("mouseup", () => this.dropDrag(cell));
+  }
+
+  startDrag(cell) {
+    this.dragStartCell = [
+      cell.getAttribute("x-coord"),
+      cell.getAttribute("y-coord"),
+    ];
+  }
+
+  dropDrag(cell) {
+    this.dragEndCell = [
+      cell.getAttribute("x-coord"),
+      cell.getAttribute("y-coord"),
+    ];
+    if (this.dragStartCell.length === 2) {
+      this.screenController.moveShip(this.dragStartCell, this.dragEndCell);
+      console.log(this.dragStartCell, this.dragEndCell);
+    }
+    this.dragStartCell = [];
   }
 }
