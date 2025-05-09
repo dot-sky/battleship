@@ -73,9 +73,26 @@ export class Gameboard {
     this.moveShip(shipInfo, newHead);
   }
 
-  moveShip(shipInfo, newHead) {
+  rotateShip(shipCoord) {
+    const shipInfo = this.getShipInfo(shipCoord);
+    const shift = Math.floor(shipInfo.ship.length / 2);
+
+    const newDirection = this.rotateDirection(shipInfo.direction);
+    let newHead;
+    if (
+      this.sameDirection(shipInfo.direction, Gameboard.#direction.down) ||
+      this.sameDirection(shipInfo.direction, Gameboard.#direction.right)
+    ) {
+      newHead = [shipInfo.head[0] + shift, shipInfo.head[1] + shift];
+    } else {
+      newHead = [shipInfo.head[0] - shift, shipInfo.head[1] - shift];
+    }
+
+    this.moveShip(shipInfo, newHead, newDirection);
+  }
+
+  moveShip(shipInfo, newHead, direction = shipInfo.direction) {
     let moved = false;
-    const direction = shipInfo.direction;
     const ship = shipInfo.ship;
 
     if (this.validMove(newHead, ship.length, direction, ship)) {
@@ -83,9 +100,9 @@ export class Gameboard {
       this.placeShip(newHead, ship, direction);
 
       shipInfo.head = newHead;
-      moved = true;
+      shipInfo.direction = direction;
 
-      console.log(this.ships);
+      moved = true;
     }
 
     return moved;
@@ -163,11 +180,10 @@ export class Gameboard {
     let cell;
 
     for (let i = 0; i < length; i++) {
-      cell = this.board[coord[0]][coord[1]];
-
       if (
         !this.isValidCoord(coord) ||
-        (cell.status !== Gameboard.EMPTY_CELL && !Object.is(cell.ship, ship))
+        (this.board[coord[0]][coord[1]].status !== Gameboard.EMPTY_CELL &&
+          !Object.is(this.board[coord[0]][coord[1]].ship, ship))
       )
         return false;
 
@@ -217,6 +233,14 @@ export class Gameboard {
       (this.isValidCoord([x, y - 1]) &&
         this.board[x][y - 1].status === Gameboard.SHIP_CELL)
     );
+  }
+
+  sameDirection(dirA, dirB) {
+    return dirA[0] === dirB[0] && dirA[1] === dirB[1];
+  }
+
+  rotateDirection(direction) {
+    return [direction[1] * -1, direction[0] * -1];
   }
 
   randomBoardPlacement() {

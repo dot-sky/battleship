@@ -18,6 +18,7 @@ export class ScreenController {
 
     this.endGameContainer = this.doc.querySelector("#end-game-container");
     this.randomizerBtn = this.doc.querySelector("#random-board");
+    this.startBtn = this.doc.querySelector("#start-game");
   }
 
   render() {
@@ -71,7 +72,10 @@ export class ScreenController {
       cell.classList.add("attacked-cell");
     }
 
-    if (!activeBoard) this.eventHandler.attachShipDragDownEvent(cell);
+    if (!activeBoard) {
+      this.eventHandler.attachShipDragDownEvent(cell);
+      this.eventHandler.attachRotateShipEvent(cell);
+    }
 
     if (activeBoard && !this.gameController.gameEnded()) {
       this.eventHandler.attachCellClickEvent(cell);
@@ -84,9 +88,13 @@ export class ScreenController {
 
     return cell;
   }
-
+  // Moving ships
   moveShip(start, end) {
     this.gameController.moveShip(start, end);
+    this.render();
+  }
+  rotateShip(coords) {
+    this.gameController.rotateShip(coords);
     this.render();
   }
 
