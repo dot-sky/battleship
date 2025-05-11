@@ -8,10 +8,12 @@ export class GameController {
     END: "end",
   };
 
+  static MODE = {
+    COMPUTER: "computer",
+    FRIEND: "friend",
+  };
   constructor() {
-    this.initPlayers();
-
-    this.state = GameController.#STATE.PREP;
+    this.resetGame();
   }
 
   initPlayers() {
@@ -22,13 +24,17 @@ export class GameController {
     this.compDriver = {};
 
     // Add driver to computer players
-    if (this.player.one.isComputer())
-      this.compDriver.one = new ComputerDriver(this.player.two.board, this);
     if (this.player.two.isComputer())
       this.compDriver.two = new ComputerDriver(this.player.one.board, this);
 
     this.randomizeBoards();
+  }
 
+  resetGame() {
+    this.initPlayers();
+
+    this.state = null;
+    this.mode = null;
     this.currentTurn = "one";
   }
 
@@ -66,12 +72,15 @@ export class GameController {
 
   // status methods
   startGame() {
-    this.state = GameController.#STATE.ON_GOING;
+    if (this.state === GameController.#STATE.PREP)
+      this.state = GameController.#STATE.ON_GOING;
   }
 
   endGame() {
-    this.state = GameController.#STATE.END;
-    this.winner = this.currentTurn;
+    if (this.state === GameController.#STATE.ON_GOING) {
+      this.state = GameController.#STATE.END;
+      this.winner = this.currentTurn;
+    }
   }
 
   gameEnded() {
@@ -82,6 +91,30 @@ export class GameController {
     return this.state === GameController.#STATE.ON_GOING;
   }
 
+  gamePrepping() {
+    return this.state === GameController.#STATE.PREP;
+  }
+
+  restartRound() {
+    if (this.state === GameController.#STATE.END) {
+      this.state = GameController.#STATE.PREP;
+      this.winner = null;
+
+      this.randomizeBoards();
+    }
+  }
+
+  // mode methods
+  selectMode(mode) {
+    if (
+      mode === GameController.MODE.COMPUTER ||
+      mode === GameController.MODE.FRIEND
+    )
+      this.mode = mode;
+  }
+  startPrep() {
+    this.state = GameController.#STATE.PREP;
+  }
   // Player methods
   switchPlayer() {
     this.currentTurn = this.currentTurn === "one" ? "two" : "one";

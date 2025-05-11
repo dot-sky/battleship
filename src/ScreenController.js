@@ -16,9 +16,22 @@ export class ScreenController {
     this.boardOne = this.doc.querySelector("#board-1");
     this.boardTwo = this.doc.querySelector("#board-2");
 
-    this.endGameContainer = this.doc.querySelector("#end-game-container");
+    this.modeBtn = this.doc.querySelector("#select-mode");
+    this.computerInput = this.doc.querySelector("#radio-computer");
+    this.friendInput = this.doc.querySelector("#radio-friend");
+
     this.randomizerBtn = this.doc.querySelector("#random-board");
     this.startBtn = this.doc.querySelector("#start-game");
+
+    // Status
+    this.gameMode = this.doc.querySelector("#game-mode");
+    this.gameStatus = this.doc.querySelector("#game-status");
+
+    // Game ended
+    this.endGameContainer = this.doc.querySelector("#end-game-container");
+    this.endGameMsg = this.doc.querySelector("#end-game-msg");
+    this.restartRoundBtn = this.doc.querySelector("#restart-round");
+    this.restartGameBtn = this.doc.querySelector("#restart-game");
   }
 
   render() {
@@ -36,16 +49,23 @@ export class ScreenController {
     if (this.gameController.gameEnded()) {
       this.renderEndGame();
     }
+
+    this.updateGameInfo();
   }
 
-  renderBoard(boardDOM, gameBoard, activeBoard) {
+  updateGameInfo() {
+    this.gameMode.textContent = this.gameController.mode;
+    this.gameStatus.textContent = this.gameController.state;
+  }
+
+  renderBoard(boardDOM, gameBoard, ownBoard) {
     boardDOM.textContent = "";
 
     for (let i = 0; i < gameBoard.size; i++) {
       const row = this.doc.createElement("div");
 
       for (let j = 0; j < gameBoard.size; j++) {
-        const cell = this.renderCell(gameBoard, activeBoard, i, j);
+        const cell = this.renderCell(gameBoard, ownBoard, i, j);
         row.appendChild(cell);
       }
 
@@ -53,7 +73,7 @@ export class ScreenController {
     }
   }
 
-  renderCell(gameBoard, activeBoard, x, y) {
+  renderCell(gameBoard, ownBoard, x, y) {
     const cell = this.doc.createElement("button");
 
     const status = gameBoard.board[x][y].status;
@@ -72,12 +92,12 @@ export class ScreenController {
       cell.classList.add("attacked-cell");
     }
 
-    if (!activeBoard) {
+    if (!ownBoard && this.gameController.gamePrepping()) {
       this.eventHandler.attachShipDragDownEvent(cell);
       this.eventHandler.attachRotateShipEvent(cell);
     }
 
-    if (activeBoard && !this.gameController.gameEnded()) {
+    if (ownBoard && this.gameController.gameOnGoing()) {
       this.eventHandler.attachCellClickEvent(cell);
     }
 
@@ -93,6 +113,7 @@ export class ScreenController {
     this.gameController.moveShip(start, end);
     this.render();
   }
+
   rotateShip(coords) {
     this.gameController.rotateShip(coords);
     this.render();
@@ -100,9 +121,7 @@ export class ScreenController {
 
   // End Game
   renderEndGame() {
-    this.endGameContainer.textContent = "";
-    const msg = this.doc.createElement("div");
-    msg.textContent = `Player ${this.gameController.winner} has won!`;
-    this.endGameContainer.appendChild(msg);
+    this.endGameMsg.textContent = `Player ${this.gameController.winner} has won!`;
+    this.endGameContainer.classList.remove("hidden");
   }
 }

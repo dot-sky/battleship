@@ -62,7 +62,10 @@ body {
   background-color: rgb(255, 197, 197);
 }
 
-/*  */
 .inactive-board {
+  visibility: hidden;
+}
+
+.hidden {
   visibility: hidden;
 }
