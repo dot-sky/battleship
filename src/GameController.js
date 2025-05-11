@@ -12,22 +12,21 @@ export class GameController {
     COMPUTER: "computer",
     FRIEND: "friend",
   };
+
   constructor() {
     this.resetGame();
   }
 
   initPlayers() {
-    this.player = {
-      one: new Player("real"),
-      two: new Player("computer"),
-    };
-    this.compDriver = {};
-
-    // Add driver to computer players
-    if (this.player.two.isComputer())
-      this.compDriver.two = new ComputerDriver(this.player.one.board, this);
-
-    this.randomizeBoards();
+    this.player = { one: new Player("real") };
+    if (this.mode === GameController.MODE.COMPUTER) {
+      this.player.two = new Player("computer");
+      this.compDriver = {
+        two: new ComputerDriver(this.player.one.board, this),
+      };
+    } else {
+      this.player.two = new Player("real");
+    }
   }
 
   resetGame() {
@@ -72,8 +71,10 @@ export class GameController {
 
   // status methods
   startGame() {
-    if (this.state === GameController.#STATE.PREP)
+    if (this.state === GameController.#STATE.PREP) {
       this.state = GameController.#STATE.ON_GOING;
+      this.currentTurn = "one";
+    }
   }
 
   endGame() {
@@ -109,8 +110,11 @@ export class GameController {
     if (
       mode === GameController.MODE.COMPUTER ||
       mode === GameController.MODE.FRIEND
-    )
+    ) {
       this.mode = mode;
+      this.initPlayers();
+      this.randomizeBoards();
+    }
   }
   startPrep() {
     this.state = GameController.#STATE.PREP;

@@ -15,6 +15,9 @@ export class EventHandler {
     this.screenController.randomizerBtn.addEventListener("click", () => {
       this.randomBtnClick();
     });
+    this.screenController.confirmPlacementBtn.addEventListener("click", () => {
+      this.confirmPlacementBtnClick();
+    });
     this.screenController.startBtn.addEventListener("click", () => {
       this.startBtnClick();
     });
@@ -28,7 +31,11 @@ export class EventHandler {
 
   randomBtnClick() {
     this.screenController.gameController.randomizeBoards();
+    this.screenController.render();
+  }
 
+  confirmPlacementBtnClick() {
+    this.screenController.gameController.switchPlayer();
     this.screenController.render();
   }
 

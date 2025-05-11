@@ -21,6 +21,7 @@ export class ScreenController {
     this.friendInput = this.doc.querySelector("#radio-friend");
 
     this.randomizerBtn = this.doc.querySelector("#random-board");
+    this.confirmPlacementBtn = this.doc.querySelector("#confirm-placement");
     this.startBtn = this.doc.querySelector("#start-game");
 
     // Status
