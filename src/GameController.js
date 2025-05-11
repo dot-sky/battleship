@@ -42,6 +42,10 @@ export class GameController {
     this.player.two.board.randomBoardPlacement();
   }
 
+  randomizeCurrentBoard() {
+    this.player[this.currentTurn].board.randomBoardPlacement();
+  }
+
   playTurn(coord) {
     if (!this.gameOnGoing()) return false;
 

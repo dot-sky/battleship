@@ -30,7 +30,7 @@ export class EventHandler {
   }
 
   randomBtnClick() {
-    this.screenController.gameController.randomizeBoards();
+    this.screenController.gameController.randomizeCurrentBoard();
     this.screenController.render();
   }
 
