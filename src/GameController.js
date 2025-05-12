@@ -120,11 +120,17 @@ export class GameController {
       this.randomizeBoards();
     }
   }
+
   startPrep() {
     this.state = GameController.#STATE.PREP;
   }
+
+  friendMode() {
+    return this.mode === GameController.MODE.FRIEND;
+  }
+
   // Player methods
-  switchPlayer() {
+  switchPlayer(state = this.state) {
     this.currentTurn = this.currentTurn === "one" ? "two" : "one";
   }
 

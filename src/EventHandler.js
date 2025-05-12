@@ -16,11 +16,17 @@ export class EventHandler {
       this.randomBtnClick();
     });
     this.screenController.confirmPlacementBtn.addEventListener("click", () => {
-      this.confirmPlacementBtnClick();
+      this.screenController.confirmPlacement();
     });
     this.screenController.startBtn.addEventListener("click", () => {
       this.startBtnClick();
     });
+
+    // Switching Window
+    this.screenController.closeSwitchBtn.addEventListener("click", () => {
+      this.closeSwitchBtnClick();
+    });
+
     this.screenController.restartRoundBtn.addEventListener("click", () => {
       this.restartRoundBtnClick();
     });
@@ -34,13 +40,8 @@ export class EventHandler {
     this.screenController.render();
   }
 
-  confirmPlacementBtnClick() {
-    this.screenController.gameController.switchPlayer();
-    this.screenController.render();
-  }
-
   startBtnClick() {
-    this.screenController.gameController.startGame();
+    this.screenController.startGame();
     this.screenController.render();
   }
 
@@ -51,6 +52,11 @@ export class EventHandler {
 
   restartGameBtnClick() {
     this.screenController.gameController.resetGame();
+    this.screenController.render();
+  }
+
+  closeSwitchBtnClick() {
+    this.screenController.hideSwitchingWindow();
     this.screenController.render();
   }
 
@@ -69,12 +75,11 @@ export class EventHandler {
   }
 
   cellClick(cell) {
-    this.screenController.gameController.playTurn([
+    this.screenController.playTurn([
       cell.getAttribute("x-coord"),
       cell.getAttribute("y-coord"),
     ]);
-
-    this.screenController.render();
+    // this.screenController.renderCell();
   }
 
   // Moving ships

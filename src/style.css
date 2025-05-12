@@ -69,3 +69,7 @@ body {
 .hidden {
   visibility: hidden;
 }
+
+.d-none {
+  display: none;
+}
