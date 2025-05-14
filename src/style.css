@@ -1,7 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&family=Outfit:wght@100..900&display=swap");
 :root {
+  --text: #050315;
+  --bg-white: #fff;
+  --bg-neutral: #e5eaed;
+
+  --primary: #5aa9e6;
+  --secondary: #cceafd;
+  /* --secondary: #7fc8f8; */
+  --danger: #ff7f94;
+  --warning: #fde672;
+  --success: #06d6a0;
+
+  --bg-accent-200: #b8b8ff;
+
+  --bg-neutral-100: #d2d4d6;
+  --bg-neutral-200: #a7a7a8;
+
+  --bg-neutral-50: #ebebfa;
+  --bg-neutral-300: #9381ff;
+  --bg-neutral-400: #5c5cd6;
+  --bg-neutral-500: #3333cc;
+  --bg-neutral-600: #2929a3;
+  --bg-neutral-700: #1f1f7a;
+  --bg-neutral-800: #141452;
+  --bg-neutral-900: #0a0a29;
+  --bg-neutral-950: #050514;
+
+  --primary-50: #e9f4fc;
+  --primary-100: #d3e8f8;
+  --primary-200: #a6d1f2;
+  --primary-300: #7abaeb;
+  --primary-400: #4ea3e4;
+  --primary-500: #218cde;
+  --primary-600: #1b70b1;
+  --primary-700: #145485;
+  --primary-800: #0d3859;
+  --primary-900: #071c2c;
+  --primary-950: #030e16;
+
+  --secondary-50: #e7f5fe;
+  --secondary-100: #cceafd;
+  --secondary-200: #9ed5fa;
+  --secondary-300: #6ec0f7;
+  --secondary-400: #3dabf5;
+  --secondary-500: #0d96f2;
+  --secondary-600: #0a78c2;
+  --secondary-700: #085a91;
+  --secondary-800: #053c61;
+  --secondary-900: #031e30;
+  --secondary-950: #010f18;
+
   /* Spacing */
+  --space-half: 4px;
   --space-1x: 8px;
   --space-2x: 16px;
+  --space-2x3: 20px;
   --space-3x: 24px;
   --space-4x: 32px;
   --space-5x: 40px;
@@ -10,6 +63,7 @@
   --size-sm: 16px;
   --size-md: 24px;
   --size-lg: 32px;
+  --size-lg-md: 36px;
   --size-xl: 40px;
   --size-jumbo: 64px;
 }
@@ -30,6 +84,50 @@ textarea,
 select {
   font: inherit;
 }
+/* Font sizing */
+body,
+* {
+  font-family: "Outfit", sans-serif;
+  font-weight: 400;
+  color: var(--text);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Lexend Deca", sans-serif;
+  font-weight: 700;
+}
+
+html {
+  font-size: 100%;
+} /* 16px */
+
+h1 {
+  font-size: 4.21rem; /* 67.36px */
+}
+
+h2 {
+  font-size: 3.158rem; /* 50.56px */
+}
+
+h3 {
+  font-size: 2.369rem; /* 37.92px */
+}
+
+h4 {
+  font-size: 1.777rem; /* 28.48px */
+}
+
+h5 {
+  font-size: 1.333rem; /* 21.28px */
+}
+
+small {
+  font-size: 0.75rem; /* 12px */
+}
 
 /* General  */
 body {
@@ -37,29 +135,29 @@ body {
 }
 
 /* Style */
-.main-container {
+.gameboard-container {
   display: flex;
   gap: var(--space-4x);
 }
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-half);
+}
+.board > div {
+  display: flex;
+  gap: var(--space-half);
+}
 
 .board-cell {
-  height: var(--size-xl);
-  width: var(--size-xl);
+  height: var(--size-lg-md);
+  width: var(--size-lg-md);
 
-  outline: 1px solid black;
-  border: 0px;
-}
+  border-radius: 3px;
+  border: 0;
+  padding: 0;
 
-.empty-cell {
-  background-color: white;
-}
-
-.attacked-cell {
-  background-color: rgb(245, 255, 213);
-}
-
-.attacked-ship {
-  background-color: rgb(255, 197, 197);
+  cursor: pointer;
 }
 
 .inactive-board {
@@ -68,6 +166,87 @@ body {
 
 .hidden {
   visibility: hidden;
+}
+
+.d-none {
+  display: none;
+}
+
+/* Players info */
+.players-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2x);
+}
+
+.player-1-info {
+  justify-content: end;
+}
+
+.player-1-info,
+.player-2-info {
+  display: flex;
+  gap: var(--space-2x);
+}
+
+/* Boards */
+
+/* Empty cell */
+.own-board .empty-cell {
+  background-color: var(--secondary-100);
+}
+.own-board .empty-cell:hover {
+  background-color: var(--secondary-200);
+}
+.empty-cell {
+  background-color: var(--bg-neutral);
+}
+
+.own-board .ship-cell {
+  background-color: var(--bg-accent-200);
+}
+
+.own-board .attacked-cell {
+  background-color: var(--secondary-100);
+}
+.attacked-cell {
+  background-color: var(--bg-neutral);
+}
+
+.own-board .empty-circle {
+  display: flex;
+  width: var(--space-2x);
+  height: var(--space-2x);
+  border-radius: 100%;
+  background-color: var(--primary-300);
+  margin: 0 auto;
+}
+.empty-circle {
+  display: flex;
+  width: var(--space-2x);
+  height: var(--space-2x);
+  border-radius: 100%;
+  background-color: var(--bg-neutral-200);
+  margin: 0 auto;
+}
+
+.empty-circle-hidden {
+  width: var(--space-2x);
+  height: var(--space-2x);
+  border-radius: 100%;
+  background-color: var(--bg-neutral-100);
+  margin: 0 auto;
+}
+
+.own-board .attacked-ship,
+.attacked-ship {
+  background-color: var(--danger);
+}
+
+/* Generic rules */
+
+.d-flex {
+  display: flex;
 }
 
 .d-none {

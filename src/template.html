@@ -8,48 +8,77 @@
 </head>
 
 <body>
-    <h1>Battleship</h1>
-    <div class="main-container">
-        <div id="board-1">
+    <div class="game-container">
+        <nav>
+            <h4>Battleship</h4>
+        </nav>
 
-        </div>
-        <div id="board-2">
+        <main>
+            <div class="players-info">
+                <div class="player-1-info">
+                    <p id="player-1-name">Player 1</p>
+                    <p id="player-1-score">0</p>
+                </div>
+                <div class="player-2-info">
+                    <p id="player-2-score">0</p>
+                    <p id="player-2-name">Player 2</p>
+                </div>
+            </div>
+            <div class="gameboard-container">
+                <div class="gameboard-1">
+                    <div class='board active-board' id="board-1">
 
+                    </div>
+                    <div class="footer-board-1"></div>
+                </div>
+                <div class="gameboard-2">
+                    <div class='board' id="board-2">
+
+                    </div>
+
+                    <div class="footer-board-2"></div>
+                </div>
+            </div>
+
+            <div id="switch-window" class="d-none">
+                <p>Pass the device to the next player!</p>
+                <button id="close-switch">I'm ready</button>
+            </div>
+        </main>
+        <div class="sub-section">
+            <div id="controlls">
+                <div>
+                    <input type="radio" name="mode" id="radio-computer" value="computer" checked>
+                    <label for="radio-computer">Computer</label>
+                    <input type="radio" name="mode" id="radio-friend" value="friend">
+                    <label for="radio-friend">Friend</label>
+                    <button id="select-mode">Select Mode</button>
+                </div>
+                <button id="random-board">
+                    Randomize
+                </button>
+                <button id="confirm-placement">
+                    Confirm Placement
+                </button>
+                <button id="start-game">
+                    Start
+                </button>
+            </div>
+
+            <div id="end-game-container">
+                <p id="end-game-msg">End game message</p>
+                <button id="restart-round">Play again?</button>
+                <button id="restart-game">Start New Game</button>
+            </div>
         </div>
     </div>
-    <div id="switch-window" class="d-none">
-        <p>Pass the device to the next player!</p>
-        <button id="close-switch">I'm ready</button>
-    </div>
-    <div id="controlls">
-        <div>
-            <input type="radio" name="mode" id="radio-computer" value="computer" checked>
-            <label for="radio-computer">Computer</label>
-            <input type="radio" name="mode" id="radio-friend" value="friend">
-            <label for="radio-friend">Friend</label>
-            <button id="select-mode">Select Mode</button>
-        </div>
-        <button id="random-board">
-            Randomize
-        </button>
-        <button id="confirm-placement">
-            Confirm Placement
-        </button>
-        <button id="start-game">
-            Start
-        </button>
-    </div>
+
     <div id="status">
         <p>Game mode: <span id="game-mode"></span></p>
         <p>Game status: <span id="game-status"></span></p>
         <p>Player: <span id="current-player"></span></p>
     </div>
 
-    <div id="end-game-container">
-        <p id="end-game-msg">End game message</p>
-        <button id="restart-round">Play again?</button>
-        <button id="restart-game">Start New Game</button>
-    </div>
 </body>
 
 </html>
