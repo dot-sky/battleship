@@ -5,8 +5,7 @@
   --bg-neutral: #e5eaed;
 
   --primary: #5aa9e6;
-  --secondary: #cceafd;
-  /* --secondary: #7fc8f8; */
+  --secondary: #7fc8f8;
   --danger: #ff7f94;
   --warning: #fde672;
   --success: #06d6a0;
@@ -172,6 +171,10 @@ body {
   display: none;
 }
 
+.d-flex {
+  display: flex;
+}
+
 /* Players info */
 .players-info {
   display: grid;
@@ -202,10 +205,18 @@ body {
   background-color: var(--bg-neutral);
 }
 
+/* Ship Cell */
 .own-board .ship-cell {
   background-color: var(--bg-accent-200);
 }
 
+/* Attacked Ship */
+.own-board .attacked-ship,
+.attacked-ship {
+  background-color: var(--danger);
+}
+
+/* Attacked Cell */
 .own-board .attacked-cell {
   background-color: var(--secondary-100);
 }
@@ -213,7 +224,10 @@ body {
   background-color: var(--bg-neutral);
 }
 
-.own-board .empty-circle {
+/* Cell Circles */
+.own-board .empty-circle,
+.empty-circle,
+.empty-circle-hover {
   display: flex;
   width: var(--space-2x);
   height: var(--space-2x);
@@ -221,34 +235,14 @@ body {
   background-color: var(--primary-300);
   margin: 0 auto;
 }
+
 .empty-circle {
-  display: flex;
-  width: var(--space-2x);
-  height: var(--space-2x);
-  border-radius: 100%;
   background-color: var(--bg-neutral-200);
-  margin: 0 auto;
 }
 
-.empty-circle-hidden {
-  width: var(--space-2x);
-  height: var(--space-2x);
-  border-radius: 100%;
+.empty-circle-hover {
+  display: none;
   background-color: var(--bg-neutral-100);
-  margin: 0 auto;
-}
-
-.own-board .attacked-ship,
-.attacked-ship {
-  background-color: var(--danger);
 }
 
 /* Generic rules */
-
-.d-flex {
-  display: flex;
-}
-
-.d-none {
-  display: none;
-}
