@@ -114,6 +114,27 @@ export class EventHandler {
     }
     this.dragStartCell = [];
   }
+
+  // Visual Events
+  attachHoverInOpponentBoard(cell) {
+    cell.addEventListener("mouseover", () => this.showEmptyCellCircle(cell));
+  }
+
+  attachHoverOutOpponentBoard(cell) {
+    cell.addEventListener("mouseout", () => this.hideEmptyCellCircle(cell));
+  }
+
+  showEmptyCellCircle(cell) {
+    const circle = cell.children[0];
+    circle.classList.add("d-flex");
+    circle.classList.remove("d-none");
+  }
+
+  hideEmptyCellCircle(cell) {
+    const circle = cell.children[0];
+    circle.classList.add("d-none");
+    circle.classList.remove("d-flex");
+  }
   //
   getCoordsFromCell(cell) {
     return [cell.getAttribute("x-coord"), cell.getAttribute("y-coord")];

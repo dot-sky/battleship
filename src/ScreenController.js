@@ -86,6 +86,12 @@ export class ScreenController {
 
       boardDOM.appendChild(row);
     }
+
+    if (ownBoard) {
+      boardDOM.classList.add("own-board");
+    } else {
+      boardDOM.classList.remove("own-board");
+    }
   }
 
   renderCell(gameBoard, ownBoard, x, y) {
@@ -93,24 +99,34 @@ export class ScreenController {
 
     const status = gameBoard.board[x][y].status;
     if (status === Gameboard.SHIP_CELL && ownBoard) {
-      cell.textContent = "O";
       cell.classList.add("ship-cell");
 
-      this.eventHandler.attachShipDraggingEvent(cell);
       if (this.gameController.gamePrepping()) {
+        this.eventHandler.attachShipDraggingEvent(cell);
         this.eventHandler.attachRotateShipEvent(cell);
       }
     } else if (status === Gameboard.SHIP_CELL_HIT) {
-      cell.textContent = "X";
       cell.classList.add("attacked-ship");
     } else if (status === Gameboard.EMPTY_CELL_HIT) {
-      cell.textContent = ".";
+      const circle = this.doc.createElement("span");
+      circle.classList.add("empty-circle");
+      cell.appendChild(circle);
+
       cell.classList.add("attacked-cell");
     } else {
-      cell.textContent = ".";
+      if (!ownBoard) {
+        const circle = this.doc.createElement("span");
+        circle.classList.add("empty-circle-hover");
+        cell.appendChild(circle);
+
+        this.eventHandler.attachHoverInOpponentBoard(cell);
+        this.eventHandler.attachHoverOutOpponentBoard(cell);
+      }
+
       cell.classList.add("empty-cell");
     }
 
+    // events
     if (ownBoard && this.gameController.gamePrepping()) {
       this.eventHandler.attachShipDragDownEvent(cell);
     }
