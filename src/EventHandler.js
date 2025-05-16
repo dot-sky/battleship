@@ -9,40 +9,17 @@ export class EventHandler {
   }
   // Onload Events
   addEvents() {
-    this.screenController.modeBtn.addEventListener("click", () => {
-      this.modeBtnClick();
-    });
-    this.screenController.randomizerBtn.addEventListener("click", () => {
-      this.randomBtnClick();
-    });
-    this.screenController.confirmPlacementBtn.addEventListener("click", () => {
-      this.screenController.confirmPlacement();
-    });
-    this.screenController.startBtn.addEventListener("click", () => {
-      this.startBtnClick();
-    });
-
     // Switching Window
     this.screenController.closeSwitchBtn.addEventListener("click", () => {
       this.closeSwitchBtnClick();
     });
 
-    this.screenController.restartRoundBtn.addEventListener("click", () => {
-      this.restartRoundBtnClick();
-    });
-    this.screenController.restartGameBtn.addEventListener("click", () => {
-      this.restartGameBtnClick();
-    });
-  }
-
-  randomBtnClick() {
-    this.screenController.gameController.randomizeCurrentBoard();
-    this.screenController.render();
-  }
-
-  startBtnClick() {
-    this.screenController.startGame();
-    this.screenController.render();
+    // this.screenController.restartRoundBtn.addEventListener("click", () => {
+    //   this.restartRoundBtnClick();
+    // });
+    // this.screenController.restartGameBtn.addEventListener("click", () => {
+    //   this.restartGameBtnClick();
+    // });
   }
 
   restartRoundBtnClick() {
@@ -60,16 +37,45 @@ export class EventHandler {
     this.screenController.render();
   }
 
-  modeBtnClick() {
-    const mode = this.screenController.computerInput.checked
-      ? this.screenController.computerInput.value
-      : this.screenController.friendInput.value;
+  // end ... Onload Events
+
+  // Mode Selection
+  attachModeEvent(btn, mode) {
+    btn.addEventListener("click", () => this.modeBtnClick(mode));
+  }
+
+  modeBtnClick(mode) {
     this.screenController.gameController.selectMode(mode);
     this.screenController.gameController.startPrep();
     this.screenController.render();
   }
-  // end ... Onload Events
 
+  // Positioning
+  attachRandomBtnEvent(btn) {
+    btn.addEventListener("click", () => this.randomBtnClick());
+  }
+
+  attachConfirmBtnEvent(btn) {
+    btn.addEventListener("click", () =>
+      this.screenController.confirmPlacement()
+    );
+  }
+
+  attachStartBtnEvent(btn) {
+    btn.addEventListener("click", () => this.startGame());
+  }
+
+  startGame() {
+    this.screenController.startGame();
+    this.screenController.render();
+  }
+
+  randomBtnClick() {
+    this.screenController.gameController.randomizeCurrentBoard();
+    this.screenController.render();
+  }
+
+  // Cell Clicks
   attachCellClickEvent(cell) {
     cell.addEventListener("click", () => this.cellClick(cell));
   }

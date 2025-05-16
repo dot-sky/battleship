@@ -9,6 +9,7 @@ export class ScreenController {
     this.eventHandler = new EventHandler(this);
 
     this.switchScreen = null;
+    this.playBlocked = false;
 
     this.cacheDOM();
     this.eventHandler.addEvents();
@@ -19,13 +20,10 @@ export class ScreenController {
     this.boardOne = this.doc.querySelector("#board-1");
     this.boardTwo = this.doc.querySelector("#board-2");
 
-    this.modeBtn = this.doc.querySelector("#select-mode");
-    this.computerInput = this.doc.querySelector("#radio-computer");
-    this.friendInput = this.doc.querySelector("#radio-friend");
-
-    this.randomizerBtn = this.doc.querySelector("#random-board");
-    this.confirmPlacementBtn = this.doc.querySelector("#confirm-placement");
-    this.startBtn = this.doc.querySelector("#start-game");
+    // Mode
+    this.controlsCont = this.doc.querySelector(".controls-start");
+    this.controlsDesc = this.doc.querySelector(".controls-desc");
+    this.controlsBtnGroup = this.doc.querySelector(".controls-btn-group");
 
     // Switching
     this.switchContainer = this.doc.querySelector("#switch-window");
@@ -37,15 +35,23 @@ export class ScreenController {
     this.currentPlayer = this.doc.querySelector("#current-player");
 
     // Game ended
-    this.endGameContainer = this.doc.querySelector("#end-game-container");
-    this.endGameMsg = this.doc.querySelector("#end-game-msg");
-    this.restartRoundBtn = this.doc.querySelector("#restart-round");
-    this.restartGameBtn = this.doc.querySelector("#restart-game");
+    // this.endGameContainer = this.doc.querySelector("#end-game-container");
+    // this.endGameMsg = this.doc.querySelector("#end-game-msg");
+    // this.restartRoundBtn = this.doc.querySelector("#restart-round");
+    // this.restartGameBtn = this.doc.querySelector("#restart-game");
   }
 
   render() {
     if (this.gameController.gameEnded()) {
       this.renderEndGame();
+    }
+
+    if (!this.gameController.mode) {
+      this.renderSelectMode();
+    } else if (this.gameController.mode && this.gameController.gamePrepping()) {
+      this.renderPlacementControls();
+    } else {
+      this.hidePlacementControls();
     }
 
     if (!this.switchScreen) {
@@ -64,7 +70,7 @@ export class ScreenController {
       this.hideBoards();
     }
 
-    this.updateGameInfo();
+    // this.updateGameInfo();
   }
 
   updateGameInfo() {
@@ -131,7 +137,7 @@ export class ScreenController {
       this.eventHandler.attachShipDragDownEvent(cell);
     }
 
-    if (!ownBoard && this.gameController.gameOnGoing()) {
+    if (!ownBoard && this.gameController.gameOnGoing() && !this.gameBlocked) {
       this.eventHandler.attachCellClickEvent(cell);
     }
 
@@ -141,6 +147,61 @@ export class ScreenController {
     cell.classList.add("board-cell");
 
     return cell;
+  }
+
+  renderSelectMode() {
+    const friendBtn = this.doc.createElement("btn");
+    const computerBtn = this.doc.createElement("btn");
+
+    this.controlsBtnGroup.textContent = "";
+    this.controlsDesc.textContent = "Choose your Opponent";
+    friendBtn.textContent = "Friend";
+    computerBtn.textContent = "Computer";
+
+    friendBtn.classList.add("btn");
+    friendBtn.classList.add("btn-secondary");
+    computerBtn.classList.add("btn");
+    computerBtn.classList.add("btn-primary");
+
+    this.eventHandler.attachModeEvent(friendBtn, "friend");
+    this.eventHandler.attachModeEvent(computerBtn, "computer");
+
+    this.controlsBtnGroup.appendChild(friendBtn);
+    this.controlsBtnGroup.appendChild(computerBtn);
+  }
+
+  renderPlacementControls() {
+    this.controlsDesc.textContent = "Place your fleet! ";
+
+    const randomBtn = this.doc.createElement("btn");
+    const confirmBtn = this.doc.createElement("btn");
+
+    this.controlsBtnGroup.textContent = "";
+    randomBtn.textContent = "Random";
+
+    randomBtn.classList.add("btn");
+    randomBtn.classList.add("btn-secondary");
+    confirmBtn.classList.add("btn");
+    confirmBtn.classList.add("btn-primary");
+
+    this.eventHandler.attachRandomBtnEvent(randomBtn);
+    if (
+      this.gameController.friendMode() &&
+      !this.gameController.secondPlayerTurn()
+    ) {
+      confirmBtn.textContent = "Confirm";
+      this.eventHandler.attachConfirmBtnEvent(confirmBtn);
+    } else {
+      confirmBtn.textContent = "Start";
+      this.eventHandler.attachStartBtnEvent(confirmBtn);
+    }
+
+    this.controlsBtnGroup.appendChild(randomBtn);
+    this.controlsBtnGroup.appendChild(confirmBtn);
+  }
+
+  hidePlacementControls() {
+    this.controlsBtnGroup.textContent = "";
   }
 
   playTurn(coords) {
@@ -153,10 +214,14 @@ export class ScreenController {
     );
 
     if (attack.success && this.gameController.friendMode()) {
-      setTimeout(() => this.renderSwitchingWindow(), 1000);
+      this.blockPlays();
     } else {
       this.render();
     }
+  }
+
+  blockPlays() {
+    this.playBlocked = true;
   }
 
   confirmPlacement() {

@@ -104,23 +104,28 @@ html {
   font-size: 100%;
 } /* 16px */
 
-h1 {
+h1,
+.h1 {
   font-size: 4.21rem; /* 67.36px */
 }
 
-h2 {
+h2,
+.h2 {
   font-size: 3.158rem; /* 50.56px */
 }
 
-h3 {
+h3,
+.h3 {
   font-size: 2.369rem; /* 37.92px */
 }
 
-h4 {
+h4,
+.h4 {
   font-size: 1.777rem; /* 28.48px */
 }
 
-h5 {
+h5,
+.h5 {
   font-size: 1.333rem; /* 21.28px */
 }
 
@@ -128,58 +133,37 @@ small {
   font-size: 0.75rem; /* 12px */
 }
 
-/* General  */
+/* Layout */
 body {
-  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-/* Style */
-.gameboard-container {
-  display: flex;
-  gap: var(--space-4x);
-}
-.board {
+.game-container {
+  border: 1px solid var(--bg-neutral-100);
+  border-radius: var(--space-1x);
+  padding: var(--space-2x);
+
   display: flex;
   flex-direction: column;
-  gap: var(--space-half);
+  gap: var(--space-2x);
 }
-.board > div {
+
+nav {
+  text-align: center;
+}
+
+main {
   display: flex;
-  gap: var(--space-half);
+  flex-direction: column;
+  gap: var(--space-1x);
 }
-
-.board-cell {
-  height: var(--size-lg-md);
-  width: var(--size-lg-md);
-
-  border-radius: 3px;
-  border: 0;
-  padding: 0;
-
-  cursor: pointer;
-}
-
-.inactive-board {
-  visibility: hidden;
-}
-
-.hidden {
-  visibility: hidden;
-}
-
-.d-none {
-  display: none;
-}
-
-.d-flex {
-  display: flex;
-}
-
 /* Players info */
 .players-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-2x);
 }
 
 .player-1-info {
@@ -190,10 +174,55 @@ body {
 .player-2-info {
   display: flex;
   gap: var(--space-2x);
+  align-items: center;
 }
 
-/* Boards */
+.gameboard-container {
+  display: flex;
+}
 
+.players-info,
+.gameboard-container {
+  gap: var(--space-4x);
+}
+
+.score {
+  color: var(--primary);
+  font-weight: bold;
+}
+/* Controls */
+.controls-start {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+/* Boards */
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-half);
+}
+.board > div {
+  display: flex;
+  gap: var(--space-half);
+}
+
+.inactive-board {
+  visibility: hidden;
+}
+
+/* Cells */
+.board-cell {
+  height: var(--size-lg-md);
+  width: var(--size-lg-md);
+
+  border-radius: 3px;
+  border: 0;
+  padding: 0;
+
+  cursor: pointer;
+}
 /* Empty cell */
 .own-board .empty-cell {
   background-color: var(--secondary-100);
@@ -245,4 +274,47 @@ body {
   background-color: var(--bg-neutral-100);
 }
 
-/* Generic rules */
+/* General  */
+.hidden {
+  visibility: hidden;
+}
+
+.d-none {
+  display: none;
+}
+
+.d-flex {
+  display: flex;
+}
+/* Buttons */
+.btn {
+  background-color: var(--bg-white);
+  border: 0;
+  cursor: pointer;
+  border-radius: var(--space-half);
+  font-size: 1.2rem;
+  text-align: center;
+}
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--bg-white);
+  padding: var(--space-1x);
+}
+.btn-secondary {
+  background-color: var(--secondary);
+  color: var(--bg-white);
+  padding: var(--space-1x);
+}
+
+.controls-start .btn {
+  width: 160px;
+}
+
+.controls-btn-group {
+  display: flex;
+  gap: var(--space-1x);
+}
+
+.controls-desc {
+  padding-bottom: var(--space-1x);
+}

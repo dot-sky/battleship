@@ -130,7 +130,7 @@ export class GameController {
   }
 
   // Player methods
-  switchPlayer(state = this.state) {
+  switchPlayer() {
     this.currentTurn = this.currentTurn === "one" ? "two" : "one";
   }
 
@@ -140,5 +140,9 @@ export class GameController {
 
   isCurrentPlayer(player) {
     return player === this.currentTurn;
+  }
+
+  secondPlayerTurn() {
+    return this.isCurrentPlayer("two");
   }
 }
