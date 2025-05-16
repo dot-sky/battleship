@@ -9,7 +9,7 @@ export class ScreenController {
     this.eventHandler = new EventHandler(this);
 
     this.switchScreen = null;
-    this.playBlocked = false;
+    this.playEnabled = true;
 
     this.cacheDOM();
     this.eventHandler.addEvents();
@@ -51,7 +51,7 @@ export class ScreenController {
     } else if (this.gameController.mode && this.gameController.gamePrepping()) {
       this.renderPlacementControls();
     } else {
-      this.hidePlacementControls();
+      this.clearControlsGroup();
     }
 
     if (!this.switchScreen) {
@@ -137,7 +137,7 @@ export class ScreenController {
       this.eventHandler.attachShipDragDownEvent(cell);
     }
 
-    if (!ownBoard && this.gameController.gameOnGoing() && !this.gameBlocked) {
+    if (!ownBoard && this.gameController.gameOnGoing()) {
       this.eventHandler.attachCellClickEvent(cell);
     }
 
@@ -200,11 +200,13 @@ export class ScreenController {
     this.controlsBtnGroup.appendChild(confirmBtn);
   }
 
-  hidePlacementControls() {
+  clearControlsGroup() {
     this.controlsBtnGroup.textContent = "";
   }
 
   playTurn(coords) {
+    if (!this.playEnabled) return;
+
     const attack = this.gameController.playTurn(coords);
     const board =
       this.gameController.player[this.gameController.currentTurn].board;
@@ -214,14 +216,33 @@ export class ScreenController {
     );
 
     if (attack.success && this.gameController.friendMode()) {
-      this.blockPlays();
+      this.disablePlays();
+      this.renderPassButton();
     } else {
       this.render();
     }
   }
 
-  blockPlays() {
-    this.playBlocked = true;
+  disablePlays() {
+    this.playEnabled = false;
+  }
+  enablePlays() {
+    this.playEnabled = true;
+  }
+
+  renderPassButton() {
+    this.clearControlsGroup();
+
+    const passBtn = this.doc.createElement("btn");
+
+    passBtn.textContent = "Pass";
+
+    passBtn.classList.add("btn");
+    passBtn.classList.add("btn-secondary");
+
+    this.eventHandler.attachPassBtnEvent(passBtn);
+
+    this.controlsBtnGroup.appendChild(passBtn);
   }
 
   confirmPlacement() {

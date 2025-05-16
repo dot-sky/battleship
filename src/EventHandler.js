@@ -34,6 +34,7 @@ export class EventHandler {
 
   closeSwitchBtnClick() {
     this.screenController.hideSwitchingWindow();
+    this.screenController.enablePlays();
     this.screenController.render();
   }
 
@@ -61,6 +62,12 @@ export class EventHandler {
     );
   }
 
+  randomBtnClick() {
+    this.screenController.gameController.randomizeCurrentBoard();
+    this.screenController.render();
+  }
+
+  //  Game Controls
   attachStartBtnEvent(btn) {
     btn.addEventListener("click", () => this.startGame());
   }
@@ -70,9 +77,12 @@ export class EventHandler {
     this.screenController.render();
   }
 
-  randomBtnClick() {
-    this.screenController.gameController.randomizeCurrentBoard();
-    this.screenController.render();
+  attachPassBtnEvent(btn) {
+    btn.addEventListener("click", () => this.passTurn());
+  }
+
+  passTurn() {
+    this.screenController.renderSwitchingWindow();
   }
 
   // Cell Clicks
