@@ -53,7 +53,7 @@ export class GameController {
 
     if (attack.success) {
       if (this.player[this.getOpponent()].board.allShipsSunk()) this.endGame();
-      else this.switchPlayer();
+      this.switchPlayer();
     }
 
     // verify if next turn is a computer player
@@ -104,9 +104,13 @@ export class GameController {
     if (this.state === GameController.#STATE.END) {
       this.state = GameController.#STATE.PREP;
       this.winner = null;
-
+      this.resetCurrentTurn();
       this.randomizeBoards();
     }
+  }
+
+  resetCurrentTurn() {
+    this.currentTurn = "one";
   }
 
   // mode methods

@@ -13,13 +13,14 @@ export class EventHandler {
     this.screenController.closeSwitchBtn.addEventListener("click", () => {
       this.closeSwitchBtnClick();
     });
+  }
 
-    // this.screenController.restartRoundBtn.addEventListener("click", () => {
-    //   this.restartRoundBtnClick();
-    // });
-    // this.screenController.restartGameBtn.addEventListener("click", () => {
-    //   this.restartGameBtnClick();
-    // });
+  attachRestartRoundBtnEvent(btn) {
+    btn.addEventListener("click", () => this.restartRoundBtnClick());
+  }
+
+  attachRestartGameBtnEvent(btn) {
+    btn.addEventListener("click", () => this.restartGameBtnClick());
   }
 
   restartRoundBtnClick() {
@@ -29,6 +30,7 @@ export class EventHandler {
 
   restartGameBtnClick() {
     this.screenController.gameController.resetGame();
+    this.screenController;
     this.screenController.render();
   }
 

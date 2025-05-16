@@ -35,23 +35,25 @@ export class ScreenController {
     this.currentPlayer = this.doc.querySelector("#current-player");
 
     // Game ended
-    // this.endGameContainer = this.doc.querySelector("#end-game-container");
-    // this.endGameMsg = this.doc.querySelector("#end-game-msg");
-    // this.restartRoundBtn = this.doc.querySelector("#restart-round");
-    // this.restartGameBtn = this.doc.querySelector("#restart-game");
+    this.endGameContainer = this.doc.querySelector("#end-game-container");
+    this.endGameMsg = this.doc.querySelector("#end-game-msg");
+    this.restartRoundBtn = this.doc.querySelector("#restart-round");
+    this.restartGameBtn = this.doc.querySelector("#restart-game");
   }
 
   render() {
-    if (this.gameController.gameEnded()) {
-      this.renderEndGame();
-    }
-
     if (!this.gameController.mode) {
       this.renderSelectMode();
-    } else if (this.gameController.mode && this.gameController.gamePrepping()) {
+    } else if (
+      this.gameController.mode &&
+      this.gameController.gamePrepping() &&
+      !this.switchScreen
+    ) {
       this.renderPlacementControls();
+    } else if (this.gameController.gameEnded()) {
+      this.renderEndRoundControls();
     } else {
-      this.clearControlsGroup();
+      this.hideControls();
     }
 
     if (!this.switchScreen) {
@@ -70,7 +72,7 @@ export class ScreenController {
       this.hideBoards();
     }
 
-    // this.updateGameInfo();
+    this.updateGameInfo();
   }
 
   updateGameInfo() {
@@ -150,6 +152,8 @@ export class ScreenController {
   }
 
   renderSelectMode() {
+    this.controlsCont.classList.remove("hidden");
+
     const friendBtn = this.doc.createElement("btn");
     const computerBtn = this.doc.createElement("btn");
 
@@ -171,6 +175,7 @@ export class ScreenController {
   }
 
   renderPlacementControls() {
+    this.controlsCont.classList.remove("hidden");
     this.controlsDesc.textContent = "Place your fleet! ";
 
     const randomBtn = this.doc.createElement("btn");
@@ -200,7 +205,15 @@ export class ScreenController {
     this.controlsBtnGroup.appendChild(confirmBtn);
   }
 
-  clearControlsGroup() {
+  hideControls() {
+    this.controlsCont.classList.add("hidden");
+    this.clearControls();
+  }
+  showControls() {
+    this.controlsCont.classList.remove("hidden");
+  }
+  clearControls() {
+    this.controlsDesc.textContent = "";
     this.controlsBtnGroup.textContent = "";
   }
 
@@ -210,12 +223,18 @@ export class ScreenController {
     const attack = this.gameController.playTurn(coords);
     const board =
       this.gameController.player[this.gameController.currentTurn].board;
-
+    // rendering
     this.getCell(this.gameController.currentTurn, coords).replaceWith(
       this.renderCell(board, false, coords[0], coords[1])
     );
+    console.log("done");
+    console.log(this.getCell(this.gameController.currentTurn, coords));
 
-    if (attack.success && this.gameController.friendMode()) {
+    if (
+      attack.success &&
+      this.gameController.friendMode() &&
+      this.gameController.gameOnGoing()
+    ) {
       this.disablePlays();
       this.renderPassButton();
     } else {
@@ -231,7 +250,8 @@ export class ScreenController {
   }
 
   renderPassButton() {
-    this.clearControlsGroup();
+    this.showControls();
+    this.clearControls();
 
     const passBtn = this.doc.createElement("btn");
 
@@ -243,6 +263,28 @@ export class ScreenController {
     this.eventHandler.attachPassBtnEvent(passBtn);
 
     this.controlsBtnGroup.appendChild(passBtn);
+  }
+
+  renderEndRoundControls() {
+    this.showControls();
+    this.clearControls();
+
+    const restartRoundBtn = this.doc.createElement("btn");
+    const restartGameBtn = this.doc.createElement("btn");
+
+    restartRoundBtn.textContent = "Play Again?";
+    restartGameBtn.textContent = "Restart game";
+
+    restartRoundBtn.classList.add("btn");
+    restartRoundBtn.classList.add("btn-secondary");
+    restartGameBtn.classList.add("btn");
+    restartGameBtn.classList.add("btn-secondary");
+
+    this.eventHandler.attachRestartRoundBtnEvent(restartRoundBtn);
+    this.eventHandler.attachRestartGameBtnEvent(restartGameBtn);
+
+    this.controlsBtnGroup.appendChild(restartRoundBtn);
+    this.controlsBtnGroup.appendChild(restartGameBtn);
   }
 
   confirmPlacement() {
@@ -303,6 +345,6 @@ export class ScreenController {
   // End Game
   renderEndGame() {
     this.endGameMsg.textContent = `Player ${this.gameController.winner} has won!`;
-    this.endGameContainer.classList.remove("hidden");
+    this.endGameContainer.classList.remove("d-none");
   }
 }
