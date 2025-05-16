@@ -21,7 +21,7 @@ export class ScreenController {
     this.boardTwo = this.doc.querySelector("#board-2");
 
     // Mode
-    this.controlsCont = this.doc.querySelector(".controls-start");
+    this.controlsContainer = this.doc.querySelector(".controls-start");
     this.controlsDesc = this.doc.querySelector(".controls-desc");
     this.controlsBtnGroup = this.doc.querySelector(".controls-btn-group");
 
@@ -52,6 +52,10 @@ export class ScreenController {
       this.renderPlacementControls();
     } else if (this.gameController.gameEnded()) {
       this.renderEndRoundControls();
+    } else if (this.gameController.gameOnGoing() && !this.switchScreen) {
+      this.clearControls();
+      this.showControls();
+      this.renderAttackMsg();
     } else {
       this.hideControls();
     }
@@ -72,7 +76,7 @@ export class ScreenController {
       this.hideBoards();
     }
 
-    this.updateGameInfo();
+    // this.updateGameInfo();
   }
 
   updateGameInfo() {
@@ -152,7 +156,7 @@ export class ScreenController {
   }
 
   renderSelectMode() {
-    this.controlsCont.classList.remove("hidden");
+    this.controlsContainer.classList.remove("hidden");
 
     const friendBtn = this.doc.createElement("btn");
     const computerBtn = this.doc.createElement("btn");
@@ -175,8 +179,8 @@ export class ScreenController {
   }
 
   renderPlacementControls() {
-    this.controlsCont.classList.remove("hidden");
-    this.controlsDesc.textContent = "Place your fleet! ";
+    this.controlsContainer.classList.remove("hidden");
+    this.controlsDesc.textContent = "Drag to move. Right Click to rotate.";
 
     const randomBtn = this.doc.createElement("btn");
     const confirmBtn = this.doc.createElement("btn");
@@ -206,11 +210,11 @@ export class ScreenController {
   }
 
   hideControls() {
-    this.controlsCont.classList.add("hidden");
+    this.controlsContainer.classList.add("hidden");
     this.clearControls();
   }
   showControls() {
-    this.controlsCont.classList.remove("hidden");
+    this.controlsContainer.classList.remove("hidden");
   }
   clearControls() {
     this.controlsDesc.textContent = "";
@@ -297,6 +301,11 @@ export class ScreenController {
     this.switchContainer.classList.remove("d-none");
     this.switchScreen = true;
     this.render();
+  }
+
+  renderAttackMsg() {
+    this.controlsDesc.textContent = "Click to attack.";
+    console.log("done");
   }
 
   hideSwitchingWindow() {

@@ -196,6 +196,7 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: var(--space-1x);
 }
 /* Boards */
 .board {
@@ -316,5 +317,5 @@ main {
 }
 
 .controls-desc {
-  padding-bottom: var(--space-1x);
+  color: var(--bg-neutral-200);
 }
