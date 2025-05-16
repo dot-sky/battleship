@@ -16,12 +16,12 @@
         <main>
             <div class="players-info">
                 <div class="player-1-info">
-                    <p id="player-1-name">Player 1</p>
-                    <p id="player-1-score">0</p>
+                    <p id="player-1-name" class="h5">Battleshiper</p>
+                    <p id="player-1-score" class="score h4">3</p>
                 </div>
                 <div class="player-2-info">
-                    <p id="player-2-score">0</p>
-                    <p id="player-2-name">Player 2</p>
+                    <p id="player-2-score" class="score h4">2</p>
+                    <p id="player-2-name" class="h5">Computer</p>
                 </div>
             </div>
             <div class="gameboard-container">
@@ -47,37 +47,29 @@
         </main>
         <div class="sub-section">
             <div id="controlls">
-                <div>
-                    <input type="radio" name="mode" id="radio-computer" value="computer" checked>
-                    <label for="radio-computer">Computer</label>
-                    <input type="radio" name="mode" id="radio-friend" value="friend">
-                    <label for="radio-friend">Friend</label>
-                    <button id="select-mode">Select Mode</button>
+                <div class="controls-start">
+                    <p class="controls-desc"></p>
+                    <div class="controls-btn-group">
+
+                    </div>
                 </div>
-                <button id="random-board">
-                    Randomize
-                </button>
-                <button id="confirm-placement">
-                    Confirm Placement
-                </button>
-                <button id="start-game">
-                    Start
-                </button>
+
             </div>
 
-            <div id="end-game-container">
+            <!-- <div id="end-game-container">
                 <p id="end-game-msg">End game message</p>
                 <button id="restart-round">Play again?</button>
                 <button id="restart-game">Start New Game</button>
-            </div>
+            </div> -->
         </div>
+
+        <!-- <div id="status">
+            <p>Game mode: <span id="game-mode"></span></p>
+            <p>Game status: <span id="game-status"></span></p>
+            <p>Player: <span id="current-player"></span></p>
+        </div> -->
     </div>
 
-    <div id="status">
-        <p>Game mode: <span id="game-mode"></span></p>
-        <p>Game status: <span id="game-status"></span></p>
-        <p>Player: <span id="current-player"></span></p>
-    </div>
 
 </body>
 
