@@ -17,13 +17,14 @@ export class ScreenController {
   }
 
   cacheDOM() {
+    this.gameBoardContainer = this.doc.querySelector("#gameboard-container");
     this.boardOne = this.doc.querySelector("#board-1");
     this.boardTwo = this.doc.querySelector("#board-2");
 
     // Mode
     this.controlsContainer = this.doc.querySelector(".controls-start");
-    this.controlsDesc = this.doc.querySelector(".controls-desc");
-    this.controlsBtnGroup = this.doc.querySelector(".controls-btn-group");
+    // this.controlsDesc = this.doc.querySelector(".controls-desc");
+    // this.controlsBtnGroup = this.doc.querySelector(".controls-btn-group");
 
     // Switching
     this.switchContainer = this.doc.querySelector("#switch-window");
@@ -53,11 +54,9 @@ export class ScreenController {
     } else if (this.gameController.gameEnded()) {
       this.renderEndRoundControls();
     } else if (this.gameController.gameOnGoing() && !this.switchScreen) {
-      this.clearControls();
-      this.showControls();
       this.renderAttackMsg();
     } else {
-      this.hideControls();
+      this.clearControlContainer();
     }
 
     if (!this.switchScreen) {
@@ -156,42 +155,56 @@ export class ScreenController {
   }
 
   renderSelectMode() {
-    this.controlsContainer.classList.remove("hidden");
+    this.controlsContainer.textContent = "";
 
+    const descMsg = this.createControlsDescMessage("Choose your Opponent");
+    const groupBtn = this.createControlGroupBtn();
     const friendBtn = this.doc.createElement("btn");
     const computerBtn = this.doc.createElement("btn");
 
-    this.controlsBtnGroup.textContent = "";
-    this.controlsDesc.textContent = "Choose your Opponent";
     friendBtn.textContent = "Friend";
     computerBtn.textContent = "Computer";
 
-    friendBtn.classList.add("btn");
-    friendBtn.classList.add("btn-secondary");
-    computerBtn.classList.add("btn");
-    computerBtn.classList.add("btn-primary");
+    friendBtn.classList.add("btn", "btn-secondary");
+    computerBtn.classList.add("btn", "btn-primary");
 
     this.eventHandler.attachModeEvent(friendBtn, "friend");
     this.eventHandler.attachModeEvent(computerBtn, "computer");
 
-    this.controlsBtnGroup.appendChild(friendBtn);
-    this.controlsBtnGroup.appendChild(computerBtn);
+    groupBtn.appendChild(friendBtn);
+    groupBtn.appendChild(computerBtn);
+
+    this.controlsContainer.appendChild(descMsg);
+    this.controlsContainer.appendChild(groupBtn);
+  }
+
+  createControlsDescMessage(msg) {
+    const p = this.doc.createElement("p");
+    p.textContent = msg;
+    p.classList.add("controls-desc");
+    return p;
+  }
+
+  createControlGroupBtn() {
+    const div = this.doc.createElement("div");
+    div.classList.add("controls-btn-group");
+    return div;
   }
 
   renderPlacementControls() {
-    this.controlsContainer.classList.remove("hidden");
-    this.controlsDesc.textContent = "Drag to move. Right Click to rotate.";
+    this.controlsContainer.textContent = "";
 
+    const descMsg = this.createControlsDescMessage(
+      "Drag to move. Right Click to rotate."
+    );
+    const groupBtn = this.createControlGroupBtn();
     const randomBtn = this.doc.createElement("btn");
     const confirmBtn = this.doc.createElement("btn");
 
-    this.controlsBtnGroup.textContent = "";
     randomBtn.textContent = "Random";
 
-    randomBtn.classList.add("btn");
-    randomBtn.classList.add("btn-secondary");
-    confirmBtn.classList.add("btn");
-    confirmBtn.classList.add("btn-primary");
+    randomBtn.classList.add("btn", "btn-secondary");
+    confirmBtn.classList.add("btn", "btn-primary");
 
     this.eventHandler.attachRandomBtnEvent(randomBtn);
     if (
@@ -205,20 +218,15 @@ export class ScreenController {
       this.eventHandler.attachStartBtnEvent(confirmBtn);
     }
 
-    this.controlsBtnGroup.appendChild(randomBtn);
-    this.controlsBtnGroup.appendChild(confirmBtn);
+    groupBtn.appendChild(randomBtn);
+    groupBtn.appendChild(confirmBtn);
+
+    this.controlsContainer.appendChild(descMsg);
+    this.controlsContainer.appendChild(groupBtn);
   }
 
-  hideControls() {
-    this.controlsContainer.classList.add("hidden");
-    this.clearControls();
-  }
-  showControls() {
-    this.controlsContainer.classList.remove("hidden");
-  }
-  clearControls() {
-    this.controlsDesc.textContent = "";
-    this.controlsBtnGroup.textContent = "";
+  clearControlContainer() {
+    this.controlsContainer.textContent = "";
   }
 
   playTurn(coords) {
@@ -254,8 +262,7 @@ export class ScreenController {
   }
 
   renderPassButton() {
-    this.showControls();
-    this.clearControls();
+    this.controlsContainer.textContent = "";
 
     const passBtn = this.doc.createElement("btn");
 
@@ -266,13 +273,13 @@ export class ScreenController {
 
     this.eventHandler.attachPassBtnEvent(passBtn);
 
-    this.controlsBtnGroup.appendChild(passBtn);
+    this.controlsContainer.appendChild(passBtn);
   }
 
   renderEndRoundControls() {
-    this.showControls();
-    this.clearControls();
+    this.controlsContainer.textContent = "";
 
+    const btnGroup = this.createControlGroupBtn();
     const restartRoundBtn = this.doc.createElement("btn");
     const restartGameBtn = this.doc.createElement("btn");
 
@@ -287,8 +294,10 @@ export class ScreenController {
     this.eventHandler.attachRestartRoundBtnEvent(restartRoundBtn);
     this.eventHandler.attachRestartGameBtnEvent(restartGameBtn);
 
-    this.controlsBtnGroup.appendChild(restartRoundBtn);
-    this.controlsBtnGroup.appendChild(restartGameBtn);
+    btnGroup.appendChild(restartRoundBtn);
+    btnGroup.appendChild(restartGameBtn);
+
+    this.controlsContainer.appendChild(btnGroup);
   }
 
   confirmPlacement() {
@@ -304,8 +313,11 @@ export class ScreenController {
   }
 
   renderAttackMsg() {
-    this.controlsDesc.textContent = "Click to attack.";
-    console.log("done");
+    this.controlsContainer.textContent = "";
+    const descMsg = this.createControlsDescMessage("Waiting attack...");
+    descMsg.classList.add("h4");
+
+    this.controlsContainer.appendChild(descMsg);
   }
 
   hideSwitchingWindow() {
@@ -314,13 +326,11 @@ export class ScreenController {
   }
 
   hideBoards() {
-    this.boardOne.classList.add("d-none");
-    this.boardTwo.classList.add("d-none");
+    this.gameBoardContainer.classList.add("d-none");
   }
 
   showBoards() {
-    this.boardOne.classList.remove("d-none");
-    this.boardTwo.classList.remove("d-none");
+    this.gameBoardContainer.classList.remove("d-none");
   }
 
   startGame() {

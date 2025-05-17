@@ -197,7 +197,10 @@ main {
   justify-content: center;
   align-items: center;
   gap: var(--space-1x);
+
+  height: calc(var(--space-1x) * 9);
 }
+
 /* Boards */
 .board {
   display: flex;
@@ -275,6 +278,63 @@ main {
   background-color: var(--bg-neutral-100);
 }
 
+/* Buttons */
+.btn {
+  background-color: var(--bg-white);
+  border: 0;
+  cursor: pointer;
+  border-radius: var(--space-half);
+  font-size: 1.2rem;
+  text-align: center;
+  padding: var(--space-1x);
+}
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--bg-white);
+}
+.btn-secondary {
+  background-color: var(--secondary);
+  color: var(--bg-white);
+}
+
+.controls-start .btn {
+  width: 160px;
+}
+
+.controls-btn-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1x);
+}
+
+.controls-desc {
+  color: var(--bg-neutral-200);
+  height: var(--space-2x3);
+}
+
+/* Switch window*/
+.switch-window {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4x);
+  align-items: center;
+  justify-content: center;
+  height: 396px;
+  width: 824px;
+
+  border: 0;
+  border-radius: var(--space-1x);
+  background-color: var(--secondary);
+}
+.switch-msg {
+  font-weight: bold;
+  color: white;
+}
+.btn-inverse {
+  width: 150px;
+  background-color: var(--bg-white);
+}
+
 /* General  */
 .hidden {
   visibility: hidden;
@@ -286,36 +346,4 @@ main {
 
 .d-flex {
   display: flex;
-}
-/* Buttons */
-.btn {
-  background-color: var(--bg-white);
-  border: 0;
-  cursor: pointer;
-  border-radius: var(--space-half);
-  font-size: 1.2rem;
-  text-align: center;
-}
-.btn-primary {
-  background-color: var(--primary);
-  color: var(--bg-white);
-  padding: var(--space-1x);
-}
-.btn-secondary {
-  background-color: var(--secondary);
-  color: var(--bg-white);
-  padding: var(--space-1x);
-}
-
-.controls-start .btn {
-  width: 160px;
-}
-
-.controls-btn-group {
-  display: flex;
-  gap: var(--space-1x);
-}
-
-.controls-desc {
-  color: var(--bg-neutral-200);
 }
