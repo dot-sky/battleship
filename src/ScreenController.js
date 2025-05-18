@@ -23,8 +23,6 @@ export class ScreenController {
 
     // Mode
     this.controlsContainer = this.doc.querySelector(".controls-start");
-    // this.controlsDesc = this.doc.querySelector(".controls-desc");
-    // this.controlsBtnGroup = this.doc.querySelector(".controls-btn-group");
 
     // Switching
     this.switchContainer = this.doc.querySelector("#switch-window");
@@ -34,6 +32,10 @@ export class ScreenController {
     this.gameMode = this.doc.querySelector("#game-mode");
     this.gameStatus = this.doc.querySelector("#game-status");
     this.currentPlayer = this.doc.querySelector("#current-player");
+
+    // Players
+    this.status1 = this.doc.querySelector("#player-1-status");
+    this.status2 = this.doc.querySelector("#player-2-status");
 
     // Game ended
     this.endGameContainer = this.doc.querySelector("#end-game-container");
@@ -71,6 +73,7 @@ export class ScreenController {
         this.gameController.isCurrentPlayer("two")
       );
       this.showBoards();
+      this.renderPlayerStatus();
     } else {
       this.hideBoards();
     }
@@ -152,6 +155,40 @@ export class ScreenController {
     cell.classList.add("board-cell");
 
     return cell;
+  }
+
+  renderPlayerStatus() {
+    this.status1.textContent = "";
+    this.status2.textContent = "";
+
+    const statusText1 = this.doc.createElement("p");
+    const statusText2 = this.doc.createElement("p");
+
+    if (this.gameController.gameEnded()) {
+      if (this.gameController.playerOneWon()) {
+        statusText1.textContent = "WIN!";
+        statusText2.textContent = "LOSE!";
+
+        statusText1.classList.add("success-text");
+        statusText2.classList.add("danger-text");
+      } else {
+        statusText1.textContent = "LOSE!";
+        statusText2.textContent = "WIN!";
+
+        statusText1.classList.add("danger-text");
+        statusText2.classList.add("success-text");
+      }
+    } else if (this.gameController.gameOnGoing()) {
+      if (this.gameController.firstPlayerTurn())
+        statusText1.textContent = "Your turn!";
+      else statusText2.textContent = "Your turn!";
+    }
+
+    statusText1.classList.add("player-status", "h5");
+    statusText2.classList.add("player-status", "h5");
+
+    this.status1.appendChild(statusText1);
+    this.status2.appendChild(statusText2);
   }
 
   renderSelectMode() {

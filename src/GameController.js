@@ -146,7 +146,14 @@ export class GameController {
     return player === this.currentTurn;
   }
 
+  firstPlayerTurn() {
+    return this.isCurrentPlayer("one");
+  }
   secondPlayerTurn() {
     return this.isCurrentPlayer("two");
+  }
+
+  playerOneWon() {
+    return this.winner === "one";
   }
 }

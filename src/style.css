@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&family=Outfit:wght@100..900&display=swap");
+@import "/node_modules/@flaticon/flaticon-uicons/css/all/all";
 :root {
   --text: #050315;
   --bg-white: #fff;
@@ -166,15 +167,38 @@ main {
   grid-template-columns: 1fr 1fr;
 }
 
-.player-1-info {
-  justify-content: end;
-}
-
 .player-1-info,
 .player-2-info {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.player-2-info {
+  flex-direction: row-reverse;
+}
+
+.player-1-detail,
+.player-2-detail {
+  display: flex;
   gap: var(--space-2x);
   align-items: center;
+}
+
+.player-2-detail {
+  flex-direction: row-reverse;
+}
+
+.player-status {
+  font-weight: 600;
+  color: var(--primary-500);
+}
+
+.danger-text {
+  color: var(--danger);
+}
+.success-text {
+  color: var(--success);
 }
 
 .gameboard-container {
@@ -309,7 +333,6 @@ main {
 
 .controls-desc {
   color: var(--bg-neutral-200);
-  height: var(--space-2x3);
 }
 
 /* Switch window*/
