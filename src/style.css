@@ -50,6 +50,8 @@
   --secondary-900: #031e30;
   --secondary-950: #010f18;
 
+  --danger-200: #feced6;
+
   /* Spacing */
   --space-half: 4px;
   --space-1x: 8px;
@@ -183,11 +185,16 @@ input {
   field-sizing: content;
   padding: 0px var(--space-1x);
   background-color: var(--bg-white);
+  border-radius: var(--space-1x);
 }
 
 input:focus {
   outline: 1px solid var(--bg-neutral-200);
   border-radius: var(--space-half);
+}
+
+input:invalid {
+  background-color: var(--danger-200);
 }
 
 .player-1-info,

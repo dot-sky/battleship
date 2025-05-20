@@ -13,6 +13,12 @@ export class EventHandler {
     this.screenController.closeSwitchBtn.addEventListener("click", () => {
       this.closeSwitchBtnClick();
     });
+    this.screenController.player1Name.addEventListener("input", (event) =>
+      this.validateName(event.target)
+    );
+    this.screenController.player2Name.addEventListener("input", (event) =>
+      this.validateName(event.target)
+    );
   }
 
   attachRestartRoundBtnEvent(btn) {
@@ -71,14 +77,35 @@ export class EventHandler {
   }
 
   setCurrentPlayerName() {
-    if (this.screenController.gameController.firstPlayerTurn()) {
+    if (
+      this.screenController.gameController.firstPlayerTurn() &&
+      this.validName(this.screenController.player1Name.value)
+    ) {
       this.screenController.gameController.getPlayerOne().name =
         this.screenController.player1Name.value;
-    } else {
+    } else if (
+      this.screenController.gameController.secondPlayerTurn() &&
+      this.validName(this.screenController.player2Name.value)
+    ) {
       this.screenController.gameController.getPlayerTwo().name =
         this.screenController.player2Name.value;
     }
   }
+
+  validateName(input) {
+    const value = input.value;
+    if (this.validName(value)) {
+      input.setCustomValidity("");
+    } else {
+      input.setCustomValidity("Please enter a name (1 to 15 characters long)");
+      input.reportValidity();
+    }
+  }
+
+  validName(value) {
+    return value.length > 0 && value.length <= 20;
+  }
+
   randomBtnClick() {
     this.screenController.gameController.randomizeCurrentBoard();
     this.screenController.render();

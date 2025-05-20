@@ -311,7 +311,6 @@ export class ScreenController {
   disablePlayerNameEdit() {
     this.player1Name.setAttribute("disabled", "");
     this.player2Name.setAttribute("disabled", "");
-    console.log("disabled");
   }
   renderPlayerName() {
     this.player1Name.value = this.gameController.getPlayerOne().name;
@@ -331,8 +330,6 @@ export class ScreenController {
     this.getCell(this.gameController.currentTurn, coords).replaceWith(
       this.renderCell(board, false, coords[0], coords[1])
     );
-    console.log("done");
-    console.log(this.getCell(this.gameController.currentTurn, coords));
 
     if (
       attack.success &&
@@ -401,7 +398,6 @@ export class ScreenController {
 
     this.controlsContainer.appendChild(btnGroup);
   }
-
 
   renderSwitchingWindow() {
     this.switchContainer.classList.remove("d-none");
