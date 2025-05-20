@@ -18,23 +18,28 @@ export class GameController {
   }
 
   initPlayers() {
-    this.player = { one: new Player("real") };
+    this.player = { one: new Player("real", "Player 1") };
     if (this.mode === GameController.MODE.COMPUTER) {
-      this.player.two = new Player("computer");
+      this.player.two = new Player("computer", "Computer");
       this.compDriver = {
         two: new ComputerDriver(this.player.one.board, this),
       };
     } else {
-      this.player.two = new Player("real");
+      this.player.two = new Player("real", "Player 2");
     }
   }
 
   resetGame() {
     this.initPlayers();
+    this.resetScores();
 
     this.state = null;
     this.mode = null;
     this.currentTurn = "one";
+  }
+
+  resetScores() {
+    this.score = { one: 0, two: 0 };
   }
 
   randomizeBoards() {
@@ -85,6 +90,7 @@ export class GameController {
     if (this.state === GameController.#STATE.ON_GOING) {
       this.state = GameController.#STATE.END;
       this.winner = this.currentTurn;
+      this.score[this.winner]++;
     }
   }
 
@@ -155,5 +161,12 @@ export class GameController {
 
   playerOneWon() {
     return this.winner === "one";
+  }
+
+  getPlayerOne() {
+    return this.player.one;
+  }
+  getPlayerTwo() {
+    return this.player.two;
   }
 }

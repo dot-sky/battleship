@@ -28,7 +28,7 @@ export class ScreenController {
     this.switchContainer = this.doc.querySelector("#switch-window");
     this.closeSwitchBtn = this.doc.querySelector("#close-switch");
 
-    // Status
+    // Game Status
     this.gameMode = this.doc.querySelector("#game-mode");
     this.gameStatus = this.doc.querySelector("#game-status");
     this.currentPlayer = this.doc.querySelector("#current-player");
@@ -36,6 +36,12 @@ export class ScreenController {
     // Players
     this.status1 = this.doc.querySelector("#player-1-status");
     this.status2 = this.doc.querySelector("#player-2-status");
+
+    // Player Info
+    this.player1Name = this.doc.querySelector("#player-1-name");
+    this.player2Name = this.doc.querySelector("#player-2-name");
+    this.player1Score = this.doc.querySelector("#player-1-score");
+    this.player2Score = this.doc.querySelector("#player-2-score");
 
     // Game ended
     this.endGameContainer = this.doc.querySelector("#end-game-container");
@@ -61,6 +67,17 @@ export class ScreenController {
       this.clearControlContainer();
     }
 
+    if (
+      this.gameController.mode &&
+      this.gameController.gamePrepping() &&
+      !this.switchScreen
+    )
+      this.enablePlayerNameEdit();
+    else {
+      this.disablePlayerNameEdit();
+      this.renderPlayerName();
+    }
+
     if (!this.switchScreen) {
       this.renderBoard(
         this.boardOne,
@@ -74,6 +91,7 @@ export class ScreenController {
       );
       this.showBoards();
       this.renderPlayerStatus();
+      this.renderPlayerInfo();
     } else {
       this.hideBoards();
     }
@@ -191,6 +209,11 @@ export class ScreenController {
     this.status2.appendChild(statusText2);
   }
 
+  renderPlayerInfo() {
+    this.player1Score.textContent = this.gameController.score.one;
+    this.player2Score.textContent = this.gameController.score.two;
+  }
+
   renderSelectMode() {
     this.controlsContainer.textContent = "";
 
@@ -198,15 +221,21 @@ export class ScreenController {
     const groupBtn = this.createControlGroupBtn();
     const friendBtn = this.doc.createElement("btn");
     const computerBtn = this.doc.createElement("btn");
+    const friendText = this.doc.createTextNode("Friend");
+    const computerText = this.doc.createTextNode("Computer");
+    const friendIcon = this.createIcon("fi-rs-user");
+    const computerIcon = this.createIcon("fi-rs-user-robot");
 
-    friendBtn.textContent = "Friend";
-    computerBtn.textContent = "Computer";
-
-    friendBtn.classList.add("btn", "btn-secondary");
+    friendBtn.classList.add("btn", "btn-primary");
     computerBtn.classList.add("btn", "btn-primary");
 
     this.eventHandler.attachModeEvent(friendBtn, "friend");
     this.eventHandler.attachModeEvent(computerBtn, "computer");
+
+    friendBtn.appendChild(friendIcon);
+    friendBtn.appendChild(friendText);
+    computerBtn.appendChild(computerIcon);
+    computerBtn.appendChild(computerText);
 
     groupBtn.appendChild(friendBtn);
     groupBtn.appendChild(computerBtn);
@@ -237,10 +266,12 @@ export class ScreenController {
     const groupBtn = this.createControlGroupBtn();
     const randomBtn = this.doc.createElement("btn");
     const confirmBtn = this.doc.createElement("btn");
+    const randomText = this.doc.createTextNode("Random");
+    const confirmText = this.doc.createTextNode("");
+    const randomIcon = this.createIcon("fi-rr-dice-alt");
+    let confirmIcon;
 
-    randomBtn.textContent = "Random";
-
-    randomBtn.classList.add("btn", "btn-secondary");
+    randomBtn.classList.add("btn", "btn-primary");
     confirmBtn.classList.add("btn", "btn-primary");
 
     this.eventHandler.attachRandomBtnEvent(randomBtn);
@@ -248,12 +279,19 @@ export class ScreenController {
       this.gameController.friendMode() &&
       !this.gameController.secondPlayerTurn()
     ) {
-      confirmBtn.textContent = "Confirm";
+      confirmText.textContent = "Confirm";
+      confirmIcon = this.createIcon("fi-rr-check");
       this.eventHandler.attachConfirmBtnEvent(confirmBtn);
     } else {
-      confirmBtn.textContent = "Start";
+      confirmText.textContent = "Start";
+      confirmIcon = this.createIcon("fi-rr-play");
       this.eventHandler.attachStartBtnEvent(confirmBtn);
     }
+
+    randomBtn.appendChild(randomIcon);
+    randomBtn.appendChild(randomText);
+    confirmBtn.appendChild(confirmIcon);
+    confirmBtn.appendChild(confirmText);
 
     groupBtn.appendChild(randomBtn);
     groupBtn.appendChild(confirmBtn);
@@ -262,6 +300,23 @@ export class ScreenController {
     this.controlsContainer.appendChild(groupBtn);
   }
 
+  enablePlayerNameEdit() {
+    if (this.gameController.firstPlayerTurn()) {
+      this.player1Name.removeAttribute("disabled");
+    } else {
+      this.player2Name.removeAttribute("disabled");
+    }
+  }
+
+  disablePlayerNameEdit() {
+    this.player1Name.setAttribute("disabled", "");
+    this.player2Name.setAttribute("disabled", "");
+    console.log("disabled");
+  }
+  renderPlayerName() {
+    this.player1Name.value = this.gameController.getPlayerOne().name;
+    this.player2Name.value = this.gameController.getPlayerTwo().name;
+  }
   clearControlContainer() {
     this.controlsContainer.textContent = "";
   }
@@ -302,11 +357,14 @@ export class ScreenController {
     this.controlsContainer.textContent = "";
 
     const passBtn = this.doc.createElement("btn");
-
-    passBtn.textContent = "Pass";
+    const passIcon = this.createIcon("fi-rr-angle-double-small-right");
+    const passText = this.doc.createTextNode("Pass");
 
     passBtn.classList.add("btn");
     passBtn.classList.add("btn-secondary");
+
+    passBtn.appendChild(passIcon);
+    passBtn.appendChild(passText);
 
     this.eventHandler.attachPassBtnEvent(passBtn);
 
@@ -319,17 +377,24 @@ export class ScreenController {
     const btnGroup = this.createControlGroupBtn();
     const restartRoundBtn = this.doc.createElement("btn");
     const restartGameBtn = this.doc.createElement("btn");
-
-    restartRoundBtn.textContent = "Play Again?";
-    restartGameBtn.textContent = "Restart game";
+    const restartRoundText = this.doc.createTextNode("Play Again");
+    const restartGameText = this.doc.createTextNode("New Game");
+    const restartRoundIcon = this.createIcon("fi-rs-rotate-left");
+    const restartGameIcon = this.createIcon("fi-rs-house-blank");
 
     restartRoundBtn.classList.add("btn");
-    restartRoundBtn.classList.add("btn-secondary");
+    restartRoundBtn.classList.add("btn-primary");
     restartGameBtn.classList.add("btn");
-    restartGameBtn.classList.add("btn-secondary");
+    restartGameBtn.classList.add("btn-primary");
+    restartRoundIcon.classList.add("icon-sm-md");
 
     this.eventHandler.attachRestartRoundBtnEvent(restartRoundBtn);
     this.eventHandler.attachRestartGameBtnEvent(restartGameBtn);
+
+    restartRoundBtn.appendChild(restartRoundIcon);
+    restartRoundBtn.appendChild(restartRoundText);
+    restartGameBtn.appendChild(restartGameIcon);
+    restartGameBtn.appendChild(restartGameText);
 
     btnGroup.appendChild(restartRoundBtn);
     btnGroup.appendChild(restartGameBtn);
@@ -337,11 +402,6 @@ export class ScreenController {
     this.controlsContainer.appendChild(btnGroup);
   }
 
-  confirmPlacement() {
-    this.renderSwitchingWindow();
-    this.gameController.switchPlayer();
-    this.render();
-  }
 
   renderSwitchingWindow() {
     this.switchContainer.classList.remove("d-none");
@@ -396,6 +456,13 @@ export class ScreenController {
   rotateShip(coords) {
     this.gameController.rotateShip(coords);
     this.render();
+  }
+
+  //
+  createIcon(type) {
+    const i = this.doc.createElement("i");
+    i.classList.add("fi", "icon", type);
+    return i;
   }
 
   // End Game

@@ -13,11 +13,11 @@
 
   --bg-accent-200: #b8b8ff;
 
+  --bg-neutral-50: #ebebfa;
   --bg-neutral-100: #d2d4d6;
   --bg-neutral-200: #a7a7a8;
+  --bg-neutral-300: #6a6a6c;
 
-  --bg-neutral-50: #ebebfa;
-  --bg-neutral-300: #9381ff;
   --bg-neutral-400: #5c5cd6;
   --bg-neutral-500: #3333cc;
   --bg-neutral-600: #2929a3;
@@ -66,6 +66,12 @@
   --size-lg-md: 36px;
   --size-xl: 40px;
   --size-jumbo: 64px;
+
+  /* icons */
+  --icon-sm: 16px;
+  --icon-sm-md: 20px;
+  --icon-md: 24px;
+  --icon-lg: 32px;
 }
 
 /* CSS reset */
@@ -165,6 +171,23 @@ main {
 .players-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
+}
+
+#player-1-name,
+#player-2-name {
+  color: var(--bg-neutral-300);
+}
+
+input {
+  border: 0;
+  field-sizing: content;
+  padding: 0px var(--space-1x);
+  background-color: var(--bg-white);
+}
+
+input:focus {
+  outline: 1px solid var(--bg-neutral-200);
+  border-radius: var(--space-half);
 }
 
 .player-1-info,
@@ -311,6 +334,11 @@ main {
   font-size: 1.2rem;
   text-align: center;
   padding: var(--space-1x);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1x);
 }
 .btn-primary {
   background-color: var(--primary);
@@ -355,7 +383,10 @@ main {
 }
 .btn-inverse {
   width: 150px;
+  color: var(--primary);
+  font-weight: bold;
   background-color: var(--bg-white);
+  /* border: 2px solid var(--bg-white); */
 }
 
 /* General  */
@@ -369,4 +400,16 @@ main {
 
 .d-flex {
   display: flex;
+}
+/* Icons */
+.icon {
+  display: flex;
+  font-size: var(--icon-md);
+  padding: 0px;
+
+  margin: 0px;
+  color: inherit;
+}
+.icon-sm-md {
+  font-size: var(--icon-sm-md);
 }

@@ -59,11 +59,26 @@ export class EventHandler {
   }
 
   attachConfirmBtnEvent(btn) {
-    btn.addEventListener("click", () =>
-      this.screenController.confirmPlacement()
-    );
+    btn.addEventListener("click", () => this.confirmPreparation());
   }
 
+  confirmPreparation() {
+    this.setCurrentPlayerName();
+
+    this.screenController.renderSwitchingWindow();
+    this.screenController.gameController.switchPlayer();
+    this.screenController.render();
+  }
+
+  setCurrentPlayerName() {
+    if (this.screenController.gameController.firstPlayerTurn()) {
+      this.screenController.gameController.getPlayerOne().name =
+        this.screenController.player1Name.value;
+    } else {
+      this.screenController.gameController.getPlayerTwo().name =
+        this.screenController.player2Name.value;
+    }
+  }
   randomBtnClick() {
     this.screenController.gameController.randomizeCurrentBoard();
     this.screenController.render();
@@ -75,6 +90,8 @@ export class EventHandler {
   }
 
   startGame() {
+    this.setCurrentPlayerName();
+
     this.screenController.startGame();
     this.screenController.render();
   }
