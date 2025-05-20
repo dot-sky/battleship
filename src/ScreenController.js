@@ -21,7 +21,7 @@ export class ScreenController {
     this.boardOne = this.doc.querySelector("#board-1");
     this.boardTwo = this.doc.querySelector("#board-2");
 
-    // Mode
+    // Controls
     this.controlsContainer = this.doc.querySelector(".controls-start");
 
     // Switching
@@ -42,15 +42,16 @@ export class ScreenController {
     this.player2Name = this.doc.querySelector("#player-2-name");
     this.player1Score = this.doc.querySelector("#player-1-score");
     this.player2Score = this.doc.querySelector("#player-2-score");
-
-    // Game ended
-    this.endGameContainer = this.doc.querySelector("#end-game-container");
-    this.endGameMsg = this.doc.querySelector("#end-game-msg");
-    this.restartRoundBtn = this.doc.querySelector("#restart-round");
-    this.restartGameBtn = this.doc.querySelector("#restart-game");
   }
 
+  // Render Methods
   render() {
+    this.renderControls();
+    this.renderPlayerInputs();
+    this.renderPlayersAndBoards();
+  }
+
+  renderControls() {
     if (!this.gameController.mode) {
       this.renderSelectMode();
     } else if (
@@ -66,7 +67,9 @@ export class ScreenController {
     } else {
       this.clearControlContainer();
     }
+  }
 
+  renderPlayerInputs() {
     if (
       this.gameController.mode &&
       this.gameController.gamePrepping() &&
@@ -77,7 +80,9 @@ export class ScreenController {
       this.disablePlayerNameEdit();
       this.renderPlayerName();
     }
+  }
 
+  renderPlayersAndBoards() {
     if (!this.switchScreen) {
       this.renderBoard(
         this.boardOne,
@@ -95,48 +100,35 @@ export class ScreenController {
     } else {
       this.hideBoards();
     }
-
-    // this.updateGameInfo();
   }
 
-  updateGameInfo() {
-    this.gameMode.textContent = this.gameController.mode;
-    this.gameStatus.textContent = this.gameController.state;
-    this.currentPlayer.textContent = this.gameController.currentTurn;
-  }
-
-  renderBoard(boardDOM, gameBoard, ownBoard) {
+  renderBoard(boardDOM, gameBoard, activeBoard) {
     boardDOM.textContent = "";
 
     for (let i = 0; i < gameBoard.size; i++) {
       const row = this.doc.createElement("div");
 
       for (let j = 0; j < gameBoard.size; j++) {
-        const cell = this.renderCell(gameBoard, ownBoard, i, j);
+        const cell = this.renderCell(gameBoard, activeBoard, i, j);
         row.appendChild(cell);
       }
 
       boardDOM.appendChild(row);
     }
 
-    if (ownBoard) {
-      boardDOM.classList.add("own-board");
+    if (activeBoard) {
+      boardDOM.classList.add("active-board");
     } else {
-      boardDOM.classList.remove("own-board");
+      boardDOM.classList.remove("active-board");
     }
   }
 
-  renderCell(gameBoard, ownBoard, x, y) {
+  renderCell(gameBoard, activeBoard, x, y) {
     const cell = this.doc.createElement("button");
 
     const status = gameBoard.board[x][y].status;
-    if (status === Gameboard.SHIP_CELL && ownBoard) {
+    if (status === Gameboard.SHIP_CELL && activeBoard) {
       cell.classList.add("ship-cell");
-
-      if (this.gameController.gamePrepping()) {
-        this.eventHandler.attachShipDraggingEvent(cell);
-        this.eventHandler.attachRotateShipEvent(cell);
-      }
     } else if (status === Gameboard.SHIP_CELL_HIT) {
       cell.classList.add("attacked-ship");
     } else if (status === Gameboard.EMPTY_CELL_HIT) {
@@ -145,26 +137,12 @@ export class ScreenController {
       cell.appendChild(circle);
 
       cell.classList.add("attacked-cell");
+    } else if (!activeBoard) {
+      const circle = this.doc.createElement("span");
+      circle.classList.add("empty-circle-hover");
+      cell.appendChild(circle);
     } else {
-      if (!ownBoard) {
-        const circle = this.doc.createElement("span");
-        circle.classList.add("empty-circle-hover");
-        cell.appendChild(circle);
-
-        this.eventHandler.attachHoverInOpponentBoard(cell);
-        this.eventHandler.attachHoverOutOpponentBoard(cell);
-      }
-
       cell.classList.add("empty-cell");
-    }
-
-    // events
-    if (ownBoard && this.gameController.gamePrepping()) {
-      this.eventHandler.attachShipDragDownEvent(cell);
-    }
-
-    if (!ownBoard && this.gameController.gameOnGoing()) {
-      this.eventHandler.attachCellClickEvent(cell);
     }
 
     cell.setAttribute("x-coord", x);
@@ -172,7 +150,35 @@ export class ScreenController {
 
     cell.classList.add("board-cell");
 
+    this.attachCellEvents(cell, status, activeBoard);
+
     return cell;
+  }
+
+  attachCellEvents(cell, status, activeBoard) {
+    if (
+      status === Gameboard.SHIP_CELL &&
+      activeBoard &&
+      this.gameController.gamePrepping()
+    ) {
+      this.eventHandler.attachShipDraggingEvent(cell);
+      this.eventHandler.attachRotateShipEvent(cell);
+    } else if (
+      status !== Gameboard.SHIP_CELL_HIT &&
+      status !== Gameboard.EMPTY_CELL_HIT &&
+      !activeBoard
+    ) {
+      this.eventHandler.attachHoverInOpponentBoard(cell);
+      this.eventHandler.attachHoverOutOpponentBoard(cell);
+    }
+
+    if (activeBoard && this.gameController.gamePrepping()) {
+      this.eventHandler.attachShipDragDownEvent(cell);
+    }
+
+    if (!activeBoard && this.gameController.gameOnGoing()) {
+      this.eventHandler.attachCellClickEvent(cell);
+    }
   }
 
   renderPlayerStatus() {
@@ -212,6 +218,24 @@ export class ScreenController {
   renderPlayerInfo() {
     this.player1Score.textContent = this.gameController.score.one;
     this.player2Score.textContent = this.gameController.score.two;
+  }
+
+  enablePlayerNameEdit() {
+    if (this.gameController.firstPlayerTurn()) {
+      this.player1Name.removeAttribute("disabled");
+    } else {
+      this.player2Name.removeAttribute("disabled");
+    }
+  }
+
+  disablePlayerNameEdit() {
+    this.player1Name.setAttribute("disabled", "");
+    this.player2Name.setAttribute("disabled", "");
+  }
+
+  renderPlayerName() {
+    this.player1Name.value = this.gameController.getPlayerOne().name;
+    this.player2Name.value = this.gameController.getPlayerTwo().name;
   }
 
   renderSelectMode() {
@@ -300,47 +324,8 @@ export class ScreenController {
     this.controlsContainer.appendChild(groupBtn);
   }
 
-  enablePlayerNameEdit() {
-    if (this.gameController.firstPlayerTurn()) {
-      this.player1Name.removeAttribute("disabled");
-    } else {
-      this.player2Name.removeAttribute("disabled");
-    }
-  }
-
-  disablePlayerNameEdit() {
-    this.player1Name.setAttribute("disabled", "");
-    this.player2Name.setAttribute("disabled", "");
-  }
-  renderPlayerName() {
-    this.player1Name.value = this.gameController.getPlayerOne().name;
-    this.player2Name.value = this.gameController.getPlayerTwo().name;
-  }
   clearControlContainer() {
     this.controlsContainer.textContent = "";
-  }
-
-  playTurn(coords) {
-    if (!this.playEnabled) return;
-
-    const attack = this.gameController.playTurn(coords);
-    const board =
-      this.gameController.player[this.gameController.currentTurn].board;
-    // rendering
-    this.getCell(this.gameController.currentTurn, coords).replaceWith(
-      this.renderCell(board, false, coords[0], coords[1])
-    );
-
-    if (
-      attack.success &&
-      this.gameController.friendMode() &&
-      this.gameController.gameOnGoing()
-    ) {
-      this.disablePlays();
-      this.renderPassButton();
-    } else {
-      this.render();
-    }
   }
 
   disablePlays() {
@@ -426,6 +411,18 @@ export class ScreenController {
     this.gameBoardContainer.classList.remove("d-none");
   }
 
+  renderEndGame() {
+    this.endGameMsg.textContent = `Player ${this.gameController.winner} has won!`;
+    this.endGameContainer.classList.remove("d-none");
+  }
+
+  createIcon(type) {
+    const i = this.doc.createElement("i");
+    i.classList.add("fi", "icon", type);
+    return i;
+  }
+
+  // Game methods
   startGame() {
     this.gameController.startGame();
     if (this.gameController.friendMode()) {
@@ -443,6 +440,30 @@ export class ScreenController {
     return board.children[coords[0]].children[coords[1]];
   }
 
+  playTurn(coords) {
+    if (!this.playEnabled) return;
+
+    const attack = this.gameController.playTurn(coords);
+    const board =
+      this.gameController.player[this.gameController.currentTurn].board;
+
+    // rendering
+    this.getCell(this.gameController.currentTurn, coords).replaceWith(
+      this.renderCell(board, false, coords[0], coords[1])
+    );
+
+    if (
+      attack.success &&
+      this.gameController.friendMode() &&
+      this.gameController.gameOnGoing()
+    ) {
+      this.disablePlays();
+      this.renderPassButton();
+    } else {
+      this.render();
+    }
+  }
+
   // Moving ships
   moveShip(start, end) {
     this.gameController.moveShip(start, end);
@@ -452,18 +473,5 @@ export class ScreenController {
   rotateShip(coords) {
     this.gameController.rotateShip(coords);
     this.render();
-  }
-
-  //
-  createIcon(type) {
-    const i = this.doc.createElement("i");
-    i.classList.add("fi", "icon", type);
-    return i;
-  }
-
-  // End Game
-  renderEndGame() {
-    this.endGameMsg.textContent = `Player ${this.gameController.winner} has won!`;
-    this.endGameContainer.classList.remove("d-none");
   }
 }

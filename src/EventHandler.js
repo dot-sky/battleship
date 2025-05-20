@@ -7,37 +7,22 @@ export class EventHandler {
     this.dragStartCell = [];
     this.dragEndCell = [];
   }
+
   // Onload Events
   addEvents() {
     // Switching Window
     this.screenController.closeSwitchBtn.addEventListener("click", () => {
       this.closeSwitchBtnClick();
     });
+
+    // Name Inputs
     this.screenController.player1Name.addEventListener("input", (event) =>
       this.validateName(event.target)
     );
+
     this.screenController.player2Name.addEventListener("input", (event) =>
       this.validateName(event.target)
     );
-  }
-
-  attachRestartRoundBtnEvent(btn) {
-    btn.addEventListener("click", () => this.restartRoundBtnClick());
-  }
-
-  attachRestartGameBtnEvent(btn) {
-    btn.addEventListener("click", () => this.restartGameBtnClick());
-  }
-
-  restartRoundBtnClick() {
-    this.screenController.gameController.restartRound();
-    this.screenController.render();
-  }
-
-  restartGameBtnClick() {
-    this.screenController.gameController.resetGame();
-    this.screenController;
-    this.screenController.render();
   }
 
   closeSwitchBtnClick() {
@@ -45,7 +30,6 @@ export class EventHandler {
     this.screenController.enablePlays();
     this.screenController.render();
   }
-
   // end ... Onload Events
 
   // Mode Selection
@@ -59,23 +43,7 @@ export class EventHandler {
     this.screenController.render();
   }
 
-  // Positioning
-  attachRandomBtnEvent(btn) {
-    btn.addEventListener("click", () => this.randomBtnClick());
-  }
-
-  attachConfirmBtnEvent(btn) {
-    btn.addEventListener("click", () => this.confirmPreparation());
-  }
-
-  confirmPreparation() {
-    this.setCurrentPlayerName();
-
-    this.screenController.renderSwitchingWindow();
-    this.screenController.gameController.switchPlayer();
-    this.screenController.render();
-  }
-
+  // Player Name
   setCurrentPlayerName() {
     if (
       this.screenController.gameController.firstPlayerTurn() &&
@@ -106,12 +74,25 @@ export class EventHandler {
     return value.length > 0 && value.length <= 20;
   }
 
-  randomBtnClick() {
-    this.screenController.gameController.randomizeCurrentBoard();
+  //  Game Controls
+  attachRestartRoundBtnEvent(btn) {
+    btn.addEventListener("click", () => this.restartRoundBtnClick());
+  }
+
+  attachRestartGameBtnEvent(btn) {
+    btn.addEventListener("click", () => this.restartGameBtnClick());
+  }
+
+  restartRoundBtnClick() {
+    this.screenController.gameController.restartRound();
     this.screenController.render();
   }
 
-  //  Game Controls
+  restartGameBtnClick() {
+    this.screenController.gameController.resetGame();
+    this.screenController;
+    this.screenController.render();
+  }
   attachStartBtnEvent(btn) {
     btn.addEventListener("click", () => this.startGame());
   }
@@ -141,7 +122,28 @@ export class EventHandler {
       cell.getAttribute("x-coord"),
       cell.getAttribute("y-coord"),
     ]);
-    // this.screenController.renderCell();
+  }
+
+  // Positioning
+  attachRandomBtnEvent(btn) {
+    btn.addEventListener("click", () => this.randomBtnClick());
+  }
+
+  attachConfirmBtnEvent(btn) {
+    btn.addEventListener("click", () => this.confirmPreparation());
+  }
+
+  confirmPreparation() {
+    this.setCurrentPlayerName();
+
+    this.screenController.renderSwitchingWindow();
+    this.screenController.gameController.switchPlayer();
+    this.screenController.render();
+  }
+
+  randomBtnClick() {
+    this.screenController.gameController.randomizeCurrentBoard();
+    this.screenController.render();
   }
 
   // Moving ships
@@ -197,7 +199,7 @@ export class EventHandler {
     circle.classList.add("d-none");
     circle.classList.remove("d-flex");
   }
-  //
+
   getCoordsFromCell(cell) {
     return [cell.getAttribute("x-coord"), cell.getAttribute("y-coord")];
   }

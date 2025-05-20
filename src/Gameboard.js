@@ -245,11 +245,11 @@ export class Gameboard {
 
   randomBoardPlacement() {
     this.resetBoard(this.size);
-    // this.randomPlace("carrier");
-    // this.randomPlace("battleship");
-    // this.randomPlace("destroyer");
+    this.randomPlace("carrier");
+    this.randomPlace("battleship");
+    this.randomPlace("destroyer");
     this.randomPlace("submarine");
-    // this.randomPlace("boat");
+    this.randomPlace("boat");
   }
 
   randomPlace(type) {
@@ -271,7 +271,7 @@ export class Gameboard {
 
   // Default boards
   defaultOne() {
-    // this.place("battleship", [3, 4], "right");
+    this.place("battleship", [3, 4], "right");
     this.place("destroyer", [6, 2], "down");
     this.place("boat", [7, 6], "right");
   }

@@ -282,10 +282,10 @@ input:invalid {
   cursor: pointer;
 }
 /* Empty cell */
-.own-board .empty-cell {
+.active-board .empty-cell {
   background-color: var(--secondary-100);
 }
-.own-board .empty-cell:hover {
+.active-board .empty-cell:hover {
   background-color: var(--secondary-200);
 }
 .empty-cell {
@@ -293,26 +293,23 @@ input:invalid {
 }
 
 /* Ship Cell */
-.own-board .ship-cell {
+.active-board .ship-cell {
   background-color: var(--bg-accent-200);
 }
 
 /* Attacked Ship */
-.own-board .attacked-ship,
+.active-board .attacked-ship,
 .attacked-ship {
   background-color: var(--danger);
 }
 
 /* Attacked Cell */
-.own-board .attacked-cell {
+.active-board .attacked-cell {
   background-color: var(--secondary-100);
-}
-.attacked-cell {
-  background-color: var(--bg-neutral);
 }
 
 /* Cell Circles */
-.own-board .empty-circle,
+.active-board .empty-circle,
 .empty-circle,
 .empty-circle-hover {
   display: flex;
