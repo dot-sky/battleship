@@ -83,6 +83,8 @@ export class ScreenController {
   }
 
   renderPlayersAndBoards() {
+    console.log("///////");
+    console.log(this.gameController.gameEnded());
     if (!this.switchScreen) {
       this.renderBoard(
         this.boardOne,
@@ -116,7 +118,7 @@ export class ScreenController {
       boardDOM.appendChild(row);
     }
 
-    if (activeBoard) {
+    if (activeBoard || this.gameController.gameEnded()) {
       boardDOM.classList.add("active-board");
     } else {
       boardDOM.classList.remove("active-board");
@@ -127,7 +129,10 @@ export class ScreenController {
     const cell = this.doc.createElement("button");
 
     const status = gameBoard.board[x][y].status;
-    if (status === Gameboard.SHIP_CELL && activeBoard) {
+    if (
+      status === Gameboard.SHIP_CELL &&
+      (activeBoard || this.gameController.gameEnded())
+    ) {
       cell.classList.add("ship-cell");
     } else if (status === Gameboard.SHIP_CELL_HIT) {
       cell.classList.add("attacked-ship");
@@ -137,7 +142,7 @@ export class ScreenController {
       cell.appendChild(circle);
 
       cell.classList.add("attacked-cell");
-    } else if (!activeBoard) {
+    } else if (!activeBoard && !this.gameController.gameEnded()) {
       const circle = this.doc.createElement("span");
       circle.classList.add("empty-circle-hover");
       cell.appendChild(circle);

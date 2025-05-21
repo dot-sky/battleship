@@ -293,7 +293,7 @@ input:invalid {
 }
 
 /* Ship Cell */
-.active-board .ship-cell {
+.ship-cell {
   background-color: var(--bg-accent-200);
 }
 
