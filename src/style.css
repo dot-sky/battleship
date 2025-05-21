@@ -196,6 +196,9 @@ input:focus {
 input:invalid {
   background-color: var(--danger-200);
 }
+input:not(:disabled) {
+  border: 1px solid var(--bg-neutral-200);
+}
 
 .player-1-info,
 .player-2-info {
@@ -327,6 +330,11 @@ input:invalid {
 .empty-circle-hover {
   display: none;
   background-color: var(--bg-neutral-100);
+}
+
+/* Dragging  */
+.drag-pointer {
+  cursor: move;
 }
 
 /* Buttons */

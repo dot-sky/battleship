@@ -132,6 +132,10 @@ export class ScreenController {
       (activeBoard || this.gameController.gameEnded())
     ) {
       cell.classList.add("ship-cell");
+
+      if (this.gameController.gamePrepping()) {
+        cell.classList.add("drag-pointer");
+      }
     } else if (status === Gameboard.SHIP_CELL_HIT) {
       cell.classList.add("attacked-ship");
     } else if (status === Gameboard.EMPTY_CELL_HIT) {
