@@ -171,7 +171,8 @@ export class ScreenController {
     } else if (
       status !== Gameboard.SHIP_CELL_HIT &&
       status !== Gameboard.EMPTY_CELL_HIT &&
-      !activeBoard
+      !activeBoard &&
+      !this.gameController.gameEnded()
     ) {
       this.eventHandler.attachHoverInOpponentBoard(cell);
       this.eventHandler.attachHoverOutOpponentBoard(cell);
