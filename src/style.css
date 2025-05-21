@@ -153,11 +153,10 @@ body {
 .game-container {
   border: 1px solid var(--bg-neutral-100);
   border-radius: var(--space-1x);
-  padding: var(--space-2x);
 
   display: flex;
   flex-direction: column;
-  gap: var(--space-2x);
+  gap: var(--space-1x);
 }
 
 nav {
@@ -168,6 +167,15 @@ main {
   display: flex;
   flex-direction: column;
   gap: var(--space-1x);
+}
+
+main,
+.sub-section {
+  padding: 0px var(--space-2x);
+}
+
+.sub-section {
+  padding-bottom: var(--space-2x);
 }
 /* Players info */
 .players-info {
@@ -424,4 +432,39 @@ input:not(:disabled) {
 }
 .icon-sm-md {
   font-size: var(--icon-sm-md);
+}
+/* Nav */
+nav {
+  background-color: var(--primary-400);
+  padding: var(--space-1x) var(--space-3x);
+  border-radius: var(--space-1x) var(--space-1x) 0 0;
+
+  display: flex;
+  justify-content: space-between;
+
+  color: white;
+}
+.logo {
+  font-size: var(--icon-lg);
+}
+.app-name {
+  display: flex;
+  gap: var(--space-1x);
+  align-items: center;
+}
+.app-name,
+.app-name h4 {
+  color: var(--bg-white);
+}
+.credits {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1x);
+
+  color: inherit;
+  font-size: 0.9rem;
+}
+.credits a {
+  color: inherit;
+  display: flex;
 }
