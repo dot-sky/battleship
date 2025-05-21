@@ -83,8 +83,6 @@ export class ScreenController {
   }
 
   renderPlayersAndBoards() {
-    console.log("///////");
-    console.log(this.gameController.gameEnded());
     if (!this.switchScreen) {
       this.renderBoard(
         this.boardOne,
@@ -449,17 +447,17 @@ export class ScreenController {
   playTurn(coords) {
     if (!this.playEnabled) return;
 
+    const currentOpponent = this.gameController.getOpponent();
     const attack = this.gameController.playTurn(coords);
-    const board =
-      this.gameController.player[this.gameController.currentTurn].board;
+    const activeBoard = this.gameController.player[currentOpponent].board;
 
     // rendering
-    this.getCell(this.gameController.currentTurn, coords).replaceWith(
-      this.renderCell(board, false, coords[0], coords[1])
+    this.getCell(currentOpponent, coords).replaceWith(
+      this.renderCell(activeBoard, false, coords[0], coords[1])
     );
 
     if (
-      attack.success &&
+      !attack.hit &&
       this.gameController.friendMode() &&
       this.gameController.gameOnGoing()
     ) {

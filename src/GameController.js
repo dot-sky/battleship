@@ -58,7 +58,7 @@ export class GameController {
 
     if (attack.success) {
       if (this.player[this.getOpponent()].board.allShipsSunk()) this.endGame();
-      this.switchPlayer();
+      if (!attack.hit) this.switchPlayer();
     }
 
     // verify if next turn is a computer player
