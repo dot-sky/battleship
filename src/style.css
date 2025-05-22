@@ -62,10 +62,13 @@
   --space-5x: 40px;
 
   /* Size */
+  --size-xxs: 8px;
+  --size-xs: 12px;
   --size-sm: 16px;
   --size-md: 24px;
+  --size-md-lg: 28px;
   --size-lg: 32px;
-  --size-lg-md: 36px;
+  --size-lg-xl: 36px;
   --size-xl: 40px;
   --size-jumbo: 64px;
 
@@ -157,10 +160,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--space-1x);
-}
-
-nav {
-  text-align: center;
+  margin: var(--space-2x);
 }
 
 main {
@@ -232,7 +232,7 @@ input:not(:disabled) {
 
 .player-status {
   font-weight: 600;
-  color: var(--primary-500);
+  color: var(--primary-400);
 }
 
 .danger-text {
@@ -244,6 +244,8 @@ input:not(:disabled) {
 
 .gameboard-container {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .players-info,
@@ -283,8 +285,8 @@ input:not(:disabled) {
 
 /* Cells */
 .board-cell {
-  height: var(--size-lg-md);
-  width: var(--size-lg-md);
+  height: var(--size-lg-xl);
+  width: var(--size-lg-xl);
 
   border-radius: 3px;
   border: 0;
@@ -324,8 +326,8 @@ input:not(:disabled) {
 .empty-circle,
 .empty-circle-hover {
   display: flex;
-  width: var(--space-2x);
-  height: var(--space-2x);
+  width: var(--size-sm);
+  height: var(--size-sm);
   border-radius: 100%;
   background-color: var(--primary-300);
   margin: 0 auto;
@@ -393,11 +395,13 @@ input:not(:disabled) {
   height: 396px;
   width: 824px;
 
+  padding: var(--space-2x);
   border: 0;
   border-radius: var(--space-1x);
   background-color: var(--secondary);
 }
 .switch-msg {
+  text-align: center;
   font-weight: bold;
   color: white;
 }
@@ -441,7 +445,7 @@ nav {
 
   display: flex;
   justify-content: space-between;
-
+  gap: var(--space-2x);
   color: white;
 }
 .logo {
@@ -467,4 +471,84 @@ nav {
 .credits a {
   color: inherit;
   display: flex;
+}
+@media screen and (max-height: 640px) {
+  body {
+    height: auto;
+  }
+}
+@media screen and (max-width: 900px) {
+  .board-cell {
+    height: var(--size-lg);
+    width: var(--size-lg);
+  }
+  .active-board .empty-circle,
+  .empty-circle,
+  .empty-circle-hover {
+    width: var(--size-xs);
+    height: var(--size-xs);
+  }
+  .switch-window {
+    height: 356px;
+    width: 744px;
+  }
+}
+
+@media screen and (max-width: 808px) {
+  .gameboard-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .player-1-info,
+  .player-2-info {
+    flex-direction: column-reverse;
+    align-items: flex-end;
+  }
+  .player-2-info {
+    align-items: flex-start;
+  }
+  .switch-window {
+    width: 356px;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .board-cell {
+    height: var(--size-md);
+    width: var(--size-md);
+  }
+
+  .active-board .empty-circle,
+  .empty-circle,
+  .empty-circle-hover {
+    width: var(--size-xxs);
+    height: var(--size-xxs);
+  }
+
+  .logo {
+    font-size: var(--icon-md);
+  }
+  .app-name h4 {
+    font-size: 1.3rem;
+  }
+
+  .score.h4 {
+    font-size: 1.6rem;
+  }
+  .player-1-detail .h5,
+  .player-2-detail .h5,
+  .player-status .h5 {
+    font-size: 1.2rem;
+  }
+
+  .controls-start .btn {
+    width: 130px;
+  }
+
+  .switch-window {
+    width: 276px;
+  }
+  .switch-msg {
+    font-size: 1.7777rem;
+  }
 }
