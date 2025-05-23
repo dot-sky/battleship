@@ -1,4 +1,4 @@
 import "./style.css";
-import { ScreenController } from "./ScreenController.js";
+import { ScreenController } from "./DOM/ScreenController.js";
 
 const game = new ScreenController(document);

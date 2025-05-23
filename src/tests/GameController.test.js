@@ -1,4 +1,4 @@
-import { GameController } from "../GameController.js";
+import { GameController } from "../controllers/GameController.js";
 
 test("Player turn is changed after a play", () => {
   const game = new GameController();

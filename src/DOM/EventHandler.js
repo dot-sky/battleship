@@ -1,5 +1,3 @@
-import { GameController } from "./GameController";
-
 export class EventHandler {
   constructor(screenController) {
     this.screenController = screenController;

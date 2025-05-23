@@ -1,4 +1,4 @@
-import { Player } from "./Player.js";
+import { Player } from "../models/Player.js";
 import { ComputerDriver } from "./ComputerDriver.js";
 
 export class GameController {

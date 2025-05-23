@@ -1,4 +1,4 @@
-import { Ship } from "../Ship.js";
+import { Ship } from "../models/Ship.js";
 
 test("Destroyer ship has correct attributes", () => {
   const expected = {

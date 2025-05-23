@@ -1,5 +1,5 @@
-import { Gameboard } from "./Gameboard.js";
-import { GameController } from "./GameController.js";
+import { Gameboard } from "../models/Gameboard.js";
+import { GameController } from "../controllers/GameController.js";
 import { EventHandler } from "./EventHandler.js";
 
 export class ScreenController {
