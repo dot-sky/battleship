@@ -13,7 +13,7 @@ Click here to start playing: [https://dot-sky.github.io/battleship/](https://dot
 - **Two Game Modes**: Play against a friend or a smart computer opponent.
 - **Flexible Ship Placement**: Drag, rotate, or randomly place your ships on the gameboard.
 - **Responsive Gameplay Interface**: Visual feedback, score tracking, and custom player names.
-- **Smart Computer**: The computer intelligently attempts to sink ships once it hits one — no random flailing!
+- **Smart Computer**: The computer intelligently attempts to sink ships once it hits one.
 
 ## Tech Stack
 
